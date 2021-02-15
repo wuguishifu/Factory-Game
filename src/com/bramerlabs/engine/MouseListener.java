@@ -10,6 +10,9 @@ public class MouseListener implements MouseMotionListener, java.awt.event.MouseL
     // a pointer to the grid of tracks
     private TrackGrid trackGrid;
 
+    // the x and y position of the mouse
+    private int x, y;
+
     /**
      * default constructor
      */
@@ -49,6 +52,7 @@ public class MouseListener implements MouseMotionListener, java.awt.event.MouseL
 
     @Override
     public void mouseMoved(MouseEvent mouseEvent) {
-
+        this.x = mouseEvent.getX();
+        this.y = mouseEvent.getY();
     }
 }
