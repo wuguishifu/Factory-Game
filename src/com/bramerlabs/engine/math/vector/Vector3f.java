@@ -88,6 +88,15 @@ public class Vector3f {
     }
 
     /**
+     * flips a vector
+     * @param v - the vector
+     * @return - the flipped vector
+     */
+    public static Vector3f flip(Vector3f v) {
+        return new Vector3f(-v.x, -v.y, -v.z);
+    }
+
+    /**
      * sets each component of this vector
      * @param x - the new x component
      * @param y - the new y component
