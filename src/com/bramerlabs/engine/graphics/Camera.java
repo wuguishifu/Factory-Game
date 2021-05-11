@@ -7,35 +7,35 @@ import org.lwjgl.glfw.GLFW;
 public class Camera {
 
     // the position and rotation of the camera
-    private Vector3f position, rotation;
+    protected Vector3f position, rotation;
 
     // the input object for handling callbacks
-    private Input input;
+    protected Input input;
 
     // mouse motion variables
-    private final static float moveSpeed = 0.05f, mouseSensitivity = 0.1f;
-    private final static float rotateSpeed = 0.02f * 360;
+    protected final static float moveSpeed = 0.05f, mouseSensitivity = 0.1f;
+    protected final static float rotateSpeed = 0.02f * 360;
 
     // arcball camera variables
-    private Vector3f focus; // the position the camera is looking at
+    protected Vector3f focus; // the position the camera is looking at
 
-    private static final float DEFAULT_DISTANCE = 3f;
-    private float distance = DEFAULT_DISTANCE; // the magnitude distance to the looking position
+    protected static final float DEFAULT_DISTANCE = 3f;
+    protected float distance = DEFAULT_DISTANCE; // the magnitude distance to the looking position
 
-    private static final float DEFAULT_HORIZONTAL_DISTANCE = 0, DEFAULT_VERTICAL_DISTANCE = 0; // default distance from looking position
-    private float horizontalDistance = 0, verticalDistance = 0; // distance from the looking position
+    protected static final float DEFAULT_HORIZONTAL_DISTANCE = 0, DEFAULT_VERTICAL_DISTANCE = 0; // default distance from looking position
+    protected float horizontalDistance = 0, verticalDistance = 0; // distance from the looking position
 
-    private static final float DEFAULT_VERTICAL_ANGLE = -30, DEFAULT_HORIZONTAL_ANGLE = 30; // default angles
-    private float verticalAngle = -90, horizontalAngle = 0; // used for looking straight forward
+    protected static final float DEFAULT_VERTICAL_ANGLE = -30, DEFAULT_HORIZONTAL_ANGLE = 30; // default angles
+    protected float verticalAngle = -90, horizontalAngle = 0; // used for looking straight forward
 
-    private boolean rotatingVertical = false, rotatingHorizontal = false; // used for constraint rotation
-    private boolean translatingNorthSouth = false, translatingEastWest = false; // used for constraint translation
+    protected boolean rotatingVertical = false, rotatingHorizontal = false; // used for constraint rotation
+    protected boolean translatingNorthSouth = false, translatingEastWest = false; // used for constraint translation
 
     // the position of the mouse
-    private double oldMouseX = 0, oldMouseY = 0, newMouseX, newMouseY;
+    protected double oldMouseX = 0, oldMouseY = 0, newMouseX, newMouseY;
 
     // the position of the scroll wheel
-    private double oldScrollX = 0, oldScrollY = 0, newScrollX = 0, newScrollY = 0;
+    protected double oldScrollX = 0, oldScrollY = 0, newScrollX = 0, newScrollY = 0;
 
     /**
      * default constructor for specified position, rotation, and input object
@@ -114,12 +114,6 @@ public class Camera {
      * update method for an arcball camera
      */
     public void updateArcball() {
-        if (input.isKeyDown(GLFW.GLFW_KEY_ENTER)) {
-            this.verticalAngle = DEFAULT_VERTICAL_ANGLE;
-            this.horizontalAngle = DEFAULT_HORIZONTAL_ANGLE;
-            this.distance = DEFAULT_DISTANCE;
-        }
-
         // get the new x and y components of the mouse position
         newMouseX = input.getMouseX();
         newMouseY = input.getMouseY();
@@ -249,6 +243,16 @@ public class Camera {
         this.verticalDistance = DEFAULT_VERTICAL_DISTANCE;
         this.horizontalDistance = DEFAULT_HORIZONTAL_ANGLE;
         this.distance = DEFAULT_DISTANCE;
+    }
+
+    public void printCurrentValues() {
+        System.out.println("Current Values:");
+        System.out.println("Distance: " + distance);
+        System.out.println("Vertical Distance: " + verticalDistance);
+        System.out.println("Horizontal Distance: " + horizontalDistance);
+        System.out.println("Vertical Angle: " + verticalAngle);
+        System.out.println("Horizontal Angle: " + horizontalAngle);
+        System.out.println("Focus: " + focus);
     }
 
     /**

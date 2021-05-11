@@ -10,21 +10,23 @@ import com.bramerlabs.engine.math.vector.Vector3f;
 import com.bramerlabs.engine.math.vector.Vector4f;
 import com.bramerlabs.engine.objects.shapes.shapes_3d.Cube;
 import com.bramerlabs.engine.objects.shapes.shapes_3d.Sphere;
+import com.bramerlabs.train_simulator.player.StaticCamera;
 import com.bramerlabs.train_simulator.world.grid.TileGrid;
 import com.bramerlabs.train_simulator.world.tile.Hexagon;
 import com.bramerlabs.train_simulator.world.tile.Tile;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL46;
 
 public class TrainSimulator implements Runnable {
 
     private final Input input = new Input();
     private final Window window = new Window(input);
-    private Camera camera;
+    private StaticCamera camera;
     private Shader shader;
     private Shader lightShader;
     private Renderer renderer;
     private Vector3f lightPosition = new Vector3f(0, 2.0f, 3.0f);
-    private Cube cube;
 
     private TileGrid tileGrid;
 
@@ -59,10 +61,8 @@ public class TrainSimulator implements Runnable {
                 "shaders/default/fragment.glsl"
         ).create();
         renderer = new Renderer(window, lightPosition);
-        camera = new Camera(new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), input);
+        camera = new StaticCamera(new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), input, window);
         camera.setFocus(new Vector3f(0, 0, 0));
-        cube = new Cube(lightPosition, new Vector3f(0), new Vector3f(1), new Vector4f(0.5f, 0.5f, 0.5f, 1.0f));
-        cube.createMesh();
 
         tileGrid = new TileGrid();
         tileGrid.loadTile(new Tile(new Vector2f(0, 0)));
@@ -73,23 +73,25 @@ public class TrainSimulator implements Runnable {
         tileGrid.loadTile(new Tile(new Vector2f(-1, -1)));
         tileGrid.loadTile(new Tile(new Vector2f(-1, 0)));
 
+        camera.setIdealPosition();
+
     }
 
     private void update() {
         window.update();
         GL46.glClearColor(window.r, window.g, window.b, 1.0f);
         GL46.glClear(GL46.GL_COLOR_BUFFER_BIT | GL46.GL_DEPTH_BUFFER_BIT);
-        camera.updateArcball();
+        camera.update();
     }
 
     private void render() {
-        renderer.renderMesh(cube, camera, lightShader, Renderer.LIGHT);
-
         for (Tile tile : tileGrid.getLoadedTiles()) {
             renderer.renderMesh(tile.getHexagon(), camera, shader, Renderer.COLOR);
         }
-
         window.swapBuffers();
+
+        Vector3f picking = camera.getSelectionRay();
+        Vector3f location = Vector3f.add(camera.getPosition(), picking);
     }
 
     private void close() {
