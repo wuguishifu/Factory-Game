@@ -1,21 +1,14 @@
 package com.bramerlabs.train_simulator.main;
 
-import com.bramerlabs.engine.graphics.Camera;
 import com.bramerlabs.engine.graphics.Shader;
 import com.bramerlabs.engine.graphics.renderers.Renderer;
 import com.bramerlabs.engine.io.window.Input;
 import com.bramerlabs.engine.io.window.Window;
 import com.bramerlabs.engine.math.vector.Vector2f;
 import com.bramerlabs.engine.math.vector.Vector3f;
-import com.bramerlabs.engine.math.vector.Vector4f;
-import com.bramerlabs.engine.objects.shapes.shapes_3d.Cube;
-import com.bramerlabs.engine.objects.shapes.shapes_3d.Sphere;
 import com.bramerlabs.train_simulator.player.StaticCamera;
 import com.bramerlabs.train_simulator.world.grid.TileGrid;
-import com.bramerlabs.train_simulator.world.tile.Hexagon;
 import com.bramerlabs.train_simulator.world.tile.Tile;
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL46;
 
 public class TrainSimulator implements Runnable {

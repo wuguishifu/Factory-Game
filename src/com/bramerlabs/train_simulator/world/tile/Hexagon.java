@@ -83,5 +83,4 @@ public class Hexagon extends RenderObject {
         }
         return triangles;
     }
-
 }
