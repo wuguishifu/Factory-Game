@@ -11,11 +11,13 @@ import java.util.ArrayList;
 
 public class Hexagon extends RenderObject {
 
-    private static final double[] hexPointAngles = new double[]{Math.toRadians(30), Math.toRadians(90), Math.toRadians(150), Math.toRadians(210), Math.toRadians(270), Math.toRadians(330), Math.toRadians(30)};
-    private static final double[] hexFaceAngles = new double[]{-Math.toRadians(0), -Math.toRadians(60), -Math.toRadians(120), -Math.toRadians(180), -Math.toRadians(240), -Math.toRadians(300), -Math.toRadians(0)};
-    private static final float height = 0.2f;
+    protected static final double[] hexPointAngles = new double[]{Math.toRadians(30), Math.toRadians(90), Math.toRadians(150), Math.toRadians(210), Math.toRadians(270), Math.toRadians(330), Math.toRadians(30)};
+    protected static final double[] hexFaceAngles = new double[]{-Math.toRadians(0), -Math.toRadians(60), -Math.toRadians(120), -Math.toRadians(180), -Math.toRadians(240), -Math.toRadians(300), -Math.toRadians(0)};
+    protected static final float height = 0.2f;
 
-    private static Vector3f[] hexCornerPoints = new Vector3f[]{
+    protected float radius;
+
+    protected static Vector3f[] hexCornerPoints = new Vector3f[]{
             new Vector3f((float) Math.cos(hexPointAngles[6]), 0, (float) Math.sin(hexPointAngles[6])),
             new Vector3f((float) Math.cos(hexPointAngles[5]), 0, (float) Math.sin(hexPointAngles[5])),
             new Vector3f((float) Math.cos(hexPointAngles[4]), 0, (float) Math.sin(hexPointAngles[4])),
@@ -38,7 +40,9 @@ public class Hexagon extends RenderObject {
     }
 
     public static Hexagon getInstance(Vector3f position, float radius) {
-        return new Hexagon(generateMesh(radius), position, new Vector3f(0), new Vector3f(1));
+        Hexagon hexagon = new Hexagon(generateMesh(radius), position, new Vector3f(0), new Vector3f(1));
+        hexagon.radius = radius;
+        return hexagon;
     }
 
     public static Mesh generateMesh(float radius) {

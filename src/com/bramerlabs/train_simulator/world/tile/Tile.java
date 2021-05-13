@@ -49,8 +49,25 @@ public class Tile {
         return this.renderPosition;
     }
 
+    /**
+     * getter method
+     * @return - the hexagon used to render this tile
+     */
     public Hexagon getHexagon() {
         return this.hexagon;
+    }
+
+    /**
+     * determines if a point is within the bounding box of the hexagon
+     * @param point - the point
+     * @return - true if the point is within the bounding box of the hexagon
+     */
+    public boolean containsPoint(Vector3f point) {
+        if (point.y > position.y || point.y < position.y - Hexagon.height) {
+            return false;
+        }
+        Vector2f point2f = point.xz();
+        return (Vector2f.distance(point.xz(), position.xz()) < Math.sqrt(3) * 0.5f * hexagon.radius);
     }
 
 }
