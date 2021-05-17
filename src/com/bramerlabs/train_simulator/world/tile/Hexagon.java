@@ -7,13 +7,15 @@ import com.bramerlabs.engine.math.vector.Vector4f;
 import com.bramerlabs.engine.objects.RenderObject;
 import com.bramerlabs.engine.objects.shapes.shapes_2d.Triangle;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Hexagon extends RenderObject {
 
     protected static final double[] hexPointAngles = new double[]{Math.toRadians(30), Math.toRadians(90), Math.toRadians(150), Math.toRadians(210), Math.toRadians(270), Math.toRadians(330), Math.toRadians(30)};
     protected static final double[] hexFaceAngles = new double[]{-Math.toRadians(0), -Math.toRadians(60), -Math.toRadians(120), -Math.toRadians(180), -Math.toRadians(240), -Math.toRadians(300), -Math.toRadians(0)};
-    protected static final float height = 0.2f;
+    protected static final float defaultHeight = 0.2f;
+    protected static final float selectionHeight = 0.3f;
 
     protected float radius;
 
@@ -39,16 +41,19 @@ public class Hexagon extends RenderObject {
         super(mesh, position, rotation, scale);
     }
 
-    public static Hexagon getInstance(Vector3f position, float radius) {
-        Hexagon hexagon = new Hexagon(generateMesh(radius), position, new Vector3f(0), new Vector3f(1));
+    public static Hexagon getInstance(Vector3f position, float radius, float height) {
+        Hexagon hexagon = new Hexagon(generateMesh(radius, height), position, new Vector3f(0), new Vector3f(1));
         hexagon.radius = radius;
         return hexagon;
     }
 
-    public static Mesh generateMesh(float radius) {
+    public static Mesh generateMesh(float radius, float height) {
         Vector4f color = new Vector4f(0.5f, 0.5f, 0.5f, 1.0f);
+        if (height == selectionHeight) {
+            color = new Vector4f(Vector3f.divide(new Vector3f(new Color(247, 255, 121)), new Vector3f(255)), 0.3f);
+        }
 
-        ArrayList<Triangle> triangles = generateTriangles(radius);
+        ArrayList<Triangle> triangles = generateTriangles(radius, height);
 
         Vertex[] vertices = new Vertex[triangles.size() * 3];
         for (int i = 0; i < triangles.size(); i++) {
@@ -66,9 +71,9 @@ public class Hexagon extends RenderObject {
         return new Mesh(vertices, indices, null);
     }
 
-    public static ArrayList<Triangle> generateTriangles(float radius) {
-        Vector3f p1 = new Vector3f(0, 0, 0);
-        Vector3f p2 = new Vector3f(0, -height, 0);
+    public static ArrayList<Triangle> generateTriangles(float radius, float height) {
+        Vector3f p1 = new Vector3f(0, height/2, 0);
+        Vector3f p2 = new Vector3f(0, -height/2, 0);
         ArrayList<Triangle> triangles = new ArrayList<>();
 
         Vector3f[] hexPoints = new Vector3f[7];

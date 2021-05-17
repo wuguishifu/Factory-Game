@@ -23,7 +23,7 @@ public class Window {
     private DisplayMode displayMode;
 
     // window size and position
-    private int width, height;
+    public int width, height;
     private int defaultWidth, defaultHeight;
     private int x, y;
 

@@ -13,7 +13,10 @@ public class Tile {
     private Vector3f renderPosition;
 
     private Hexagon hexagon;
+    private Hexagon selectionHexagon;
     private static final float radius = 1.1f;
+
+    private boolean selected = false;
 
     /**
      * default constructor
@@ -29,8 +32,10 @@ public class Tile {
         this.renderPosition = Vector3f.add(this.renderPosition, Vector3f.normalize(Y_INC, position.y * 2));
         this.renderPosition = Vector3f.add(this.renderPosition, Vector3f.normalize(Z_INC, position.z * 2));
 
-        this.hexagon = Hexagon.getInstance(renderPosition, radius);
+        this.hexagon = Hexagon.getInstance(renderPosition, radius, Hexagon.defaultHeight);
         this.hexagon.createMesh();
+        this.selectionHexagon = Hexagon.getInstance(renderPosition, radius + 0.05f, Hexagon.selectionHeight);
+        this.selectionHexagon.createMesh();
     }
 
     /**
@@ -58,15 +63,37 @@ public class Tile {
     }
 
     /**
+     * getter method
+     * @return - the hexagon used to render the selection of this tile
+     */
+    public Hexagon getSelectionHexagon() {
+        return this.selectionHexagon;
+    }
+
+    /**
+     * toggles if this tile is selected or not
+     */
+    public void toggleSelected() {
+        this.selected = !this.selected;
+    }
+
+    /**
+     * getter method
+     * @return - true if the tile is currently selected
+     */
+    public boolean isSelected() {
+        return selected;
+    }
+
+    /**
      * determines if a point is within the bounding box of the hexagon
      * @param point - the point
      * @return - true if the point is within the bounding box of the hexagon
      */
     public boolean containsPoint(Vector3f point) {
-        if (point.y > position.y || point.y < position.y - Hexagon.height) {
+        if (point.y > position.y + Hexagon.defaultHeight/2 || point.y < position.y - Hexagon.defaultHeight/2) {
             return false;
         }
-        Vector2f point2f = point.xz();
         return (Vector2f.distance(point.xz(), position.xz()) < Math.sqrt(3) * 0.5f * hexagon.radius);
     }
 

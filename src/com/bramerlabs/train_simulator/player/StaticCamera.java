@@ -58,26 +58,19 @@ public class StaticCamera extends Camera {
 
     public Vector3f getSelectionRay() {
         // convert from screen coordinates to normalized device coordinates
-        float mouseX = (float) input.getMouseX();
-        float mouseY = (float) input.getMouseY();
-        IntBuffer w = BufferUtils.createIntBuffer(1);
-        IntBuffer h = BufferUtils.createIntBuffer(1);
-        GLFW.glfwGetWindowSize(window.getWindowHandle(), w, h);
-        int width = w.get(0);
-        int height = h.get(0);
-        float y = height - mouseY;
-        Vector2f normalizeDeviceCoords = new Vector2f(2 * (mouseX / width) - 1, 2 * (y / height) - 1);
+        float x = (float) (2 * input.getMouseX() / window.width - 1);
+        float y = (float) (1 - 2 * input.getMouseY() / window.height);
+        float z = -1;
+        float w = 1;
+        Vector4f clipSpace = new Vector4f(x, y, z, w);
 
-        // convert to clip coords
-        Vector4f clipCoords = new Vector4f(normalizeDeviceCoords.x, normalizeDeviceCoords.y, -1, 1);
+        Matrix4f invProj = Matrix4f.invert(window.getProjectionMatrix());
+        Vector4f viewSpace = new Vector4f(Matrix4f.multiply(invProj, clipSpace).xyz().xy(), -1f, 0f);
 
-        // convert to eye coords
-        Matrix4f invProjection = Matrix4f.invert(window.getProjectionMatrix());
-        Vector4f eyeCoords = Matrix4f.multiply(invProjection, clipCoords);
-
-        // convert to world coords
         Matrix4f invView = Matrix4f.invert(Matrix4f.view(position, rotation));
-        return Vector3f.normalize(Matrix4f.multiply(invView, eyeCoords).xyz());
+        Vector4f worldSpace = new Vector4f(Matrix4f.multiply(invView, viewSpace).xyz().xy(), -1f, 0f);
+
+        return worldSpace.xyz();
     }
 
 }

@@ -54,6 +54,13 @@ public class Vector4f {
         this.w = v.w;
     }
 
+    public Vector4f(Vector2f v, float z, float w) {
+        this.x = v.x;
+        this.y = v.y;
+        this.z = z;
+        this.w = w;
+    }
+
     /**
      * constructor for a vector from a 3-float vector and a float w component
      * @param v - the 3-float vector
