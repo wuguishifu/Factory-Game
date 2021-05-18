@@ -56,21 +56,4 @@ public class StaticCamera extends Camera {
 
     }
 
-    public Vector3f getSelectionRay() {
-        // convert from screen coordinates to normalized device coordinates
-        float x = (float) (2 * input.getMouseX() / window.width - 1);
-        float y = (float) (1 - 2 * input.getMouseY() / window.height);
-        float z = -1;
-        float w = 1;
-        Vector4f clipSpace = new Vector4f(x, y, z, w);
-
-        Matrix4f invProj = Matrix4f.invert(window.getProjectionMatrix());
-        Vector4f viewSpace = new Vector4f(Matrix4f.multiply(invProj, clipSpace).xyz().xy(), -1f, 0f);
-
-        Matrix4f invView = Matrix4f.invert(Matrix4f.view(position, rotation));
-        Vector4f worldSpace = new Vector4f(Matrix4f.multiply(invView, viewSpace).xyz().xy(), -1f, 0f);
-
-        return worldSpace.xyz();
-    }
-
 }

@@ -75,28 +75,6 @@ public class TrainSimulator implements Runnable {
         GL46.glClearColor(window.r, window.g, window.b, 1.0f);
         GL46.glClear(GL46.GL_COLOR_BUFFER_BIT | GL46.GL_DEPTH_BUFFER_BIT);
 
-        // ray selecting
-        Vector3f picking = camera.getSelectionRay();
-        picking = Vector3f.normalize(picking, 0.01f);
-        float currentPickingLength = 0.01f;
-        float pickingLengthDelta = 0.01f;
-        boolean selected = false;
-        while (currentPickingLength < 20f) {
-            Vector3f selectionPoint = Vector3f.add(camera.getPosition(), picking);
-            currentPickingLength += pickingLengthDelta;
-            picking = Vector3f.normalize(picking, currentPickingLength);
-            for (Tile tile : tileGrid.getLoadedTiles()) {
-                if (tile.containsPoint(selectionPoint)) {
-                    tile.toggleSelected();
-                    selected = true;
-                    break;
-                }
-            }
-            if (selected) {
-                break;
-            }
-        }
-
         camera.update();
     }
 
