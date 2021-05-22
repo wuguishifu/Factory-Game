@@ -53,7 +53,11 @@ public class StaticCamera extends Camera {
 
     @Override
     public void update() {
+        Vector3f pickingVector = getRayPickingVector();
+    }
 
+    public Vector3f getRayPickingVector() {
+        return Vector3f.subtract(position, getLookingAt());
     }
 
 }
