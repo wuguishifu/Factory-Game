@@ -15,9 +15,6 @@ public class World {
     public static Color C4 = new Color(222, 191, 181);
     public static Color C5 = new Color(186, 166, 165);
 
-//    ArrayList<Chunk> loadedChunks;
-//    ArrayList<Chunk> renderChunks;
-
     HashMap<Key, Chunk> loadedChunks;
     HashMap<Key, Chunk> renderChunks;
 
