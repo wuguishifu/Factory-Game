@@ -1,19 +1,25 @@
 package com.bramerlabs.train_simulator.io;
 
 import com.bramerlabs.train_simulator.main.Main;
+import com.bramerlabs.train_simulator.player.Player;
+import com.bramerlabs.train_simulator.world.World;
 
 import java.awt.event.KeyEvent;
 
 public class KeyListener implements java.awt.event.KeyListener {
 
     private Main main;
+    private World world;
+    private Player player;
 
     private final boolean[] keysPressed;
     private final boolean[] keysPressedLast;
 
-    public KeyListener(Main main) {
+    public KeyListener(Main main, World world, Player player) {
         super();
         this.main = main;
+        this.world = world;
+        this.player = player;
 
         keysPressed = new boolean[128];
         keysPressedLast = new boolean[128];
@@ -42,8 +48,12 @@ public class KeyListener implements java.awt.event.KeyListener {
         return keysPressed[keyCode];
     }
 
-    public boolean isKeyTyped(int keyCode) {
+    public boolean isKeyPressed(int keyCode) {
         return keysPressed[keyCode] && !keysPressedLast[keyCode];
+    }
+
+    public boolean isKeyReleased(int keyCode) {
+        return !keysPressed[keyCode] && keysPressedLast[keyCode];
     }
 
     public void update() {
