@@ -3,7 +3,6 @@ package com.bramerlabs.train_simulator.world;
 import com.bramerlabs.train_simulator.engine.Vector2f;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 

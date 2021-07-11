@@ -2,14 +2,18 @@ package com.bramerlabs.train_simulator.world;
 
 import com.bramerlabs.train_simulator.main.Main;
 import com.bramerlabs.train_simulator.player.Player;
+import com.bramerlabs.train_simulator.world.cells.Cell;
+import com.bramerlabs.train_simulator.world.cells.structures.Struct;
+import com.bramerlabs.train_simulator.world.cells.structures.rails.Rail;
+import com.bramerlabs.train_simulator.world.cells.tiles.ground.EmptyGround;
 
 import java.awt.*;
 
 public class Chunk {
 
-    private int x, y;
+    private final int x, y;
 
-    int[][] grid;
+    Cell[][] grid;
 
     public final static int chunkSize = 16;
     public final static int defaultCellSize = Main.defaultWindowSize.width / 20;
@@ -26,7 +30,12 @@ public class Chunk {
         this.x = x;
         this.y = y;
 
-        grid = new int[16][16];
+        grid = new Cell[chunkSize][chunkSize];
+        for (int i = 0; i < chunkSize; i++) {
+            for (int j = 0; j < chunkSize; j++) {
+                grid[i][j] = new Cell(new EmptyGround());
+            }
+        }
     }
 
     public int getX() {
@@ -40,25 +49,15 @@ public class Chunk {
     public void paint(Graphics g, float xOffset, float yOffset) {
         int x0 = (int) (((x * chunkSize) - xOffset) * cellSize) + winCenter.x;
         int y0 = (int) (((y * chunkSize) - yOffset) * cellSize) + winCenter.y;
-        paintCells(g, x0, y0);
         paintGrid(g, x0, y0);
-    }
-
-    public void paintChunkOutlines(Graphics g, int x0, int y0) {
-        int chunkWidth = (int) (chunkSize * cellSize);
-        int chunkHeight = (int) (chunkSize * cellSize);
-        g.drawRect(x0, y0, chunkWidth, chunkHeight);
+        paintCells(g, x0, y0);
     }
 
     public void paintCells(Graphics g, int x0, int y0) {
         g.setColor(World.C3);
         for (int y = 0; y < chunkSize; y++) {
             for (int x = 0; x < chunkSize; x++) {
-                if (grid[x][y] == 1) {
-                    int tx0 = (int) (x0 + (x * cellSize));
-                    int ty0 = (int) (y0 + (y * cellSize));
-                    g.fillRect(tx0, ty0, (int) cellSize, (int) cellSize);
-                }
+                grid[x][y].paint(g, (int) (x0 + x * cellSize), (int) (y0 + y * cellSize), (int) cellSize);
             }
         }
     }
@@ -93,13 +92,32 @@ public class Chunk {
     }
 
     public void updateCell(int x, int y) {
-        if (x >= Chunk.chunkSize || y >= Chunk.chunkSize) {
-            return;
-        }
-        if (this.grid[x][y] == 0) {
-            this.grid[x][y] = 1;
-        } else {
-            this.grid[x][y] = 0;
+        int type = 0;
+        grid[x][y].setStruct(new Rail(type));
+        refreshGrid();
+    }
+
+    public void refreshGrid() {
+        for (int x = 0; x < chunkSize; x++) {
+            for (int y = 0; y < chunkSize; y++) {
+                if (grid[x][y].getStruct() instanceof Rail) {
+                    boolean U = false, D = false, L = false, R = false;
+                    if (x > 0 && grid[x - 1][y].getStruct() instanceof Rail) {
+                        L = true;
+                    }
+                    if (x < chunkSize - 1 && grid[x + 1][y].getStruct() instanceof Rail) {
+                        R = true;
+                    }
+                    if (y > 0 && grid[x][y - 1].getStruct() instanceof Rail) {
+                        U = true;
+                    }
+                    if (y < chunkSize - 1 && grid[x][y + 1].getStruct() instanceof Rail) {
+                        D = true;
+                    }
+                    int type = (R ? 1 : 0) + (U ? 2 : 0) + (L ? 4 : 0) + (D ? 8 : 0);
+                    grid[x][y].getStruct().setMeta(Rail.TYPE, type);
+                }
+            }
         }
     }
 }
