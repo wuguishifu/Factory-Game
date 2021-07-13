@@ -18,4 +18,6 @@ public abstract class Struct {
 
     public abstract void setMeta(String key, int value);
 
+    public abstract int getMeta(String key);
+
 }

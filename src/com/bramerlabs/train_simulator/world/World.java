@@ -1,6 +1,7 @@
 package com.bramerlabs.train_simulator.world;
 
 import com.bramerlabs.train_simulator.engine.Vector2f;
+import com.bramerlabs.train_simulator.world.cells.structures.Struct;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -48,7 +49,7 @@ public class World {
         Chunk.updateSize(windowSize);
     }
 
-    public void updateCell(Vector2f mouse, Vector2f player) {
+    public void updateCell(Vector2f mouse, Vector2f player, Struct struct) {
         Vector2f gridPosition = Vector2f.add(player, mouse);
         gridPosition = new Vector2f((float) Math.floor(gridPosition.x), (float) Math.floor(gridPosition.y));
         Vector2f chunk = new Vector2f((float) Math.floor(gridPosition.x / Chunk.chunkSize),
@@ -64,7 +65,7 @@ public class World {
 
         Chunk updateChunk = loadedChunks.get(new Key((int) chunk.x, (int) chunk.y));
         if (updateChunk != null) {
-            updateChunk.updateCell((int) cell.x, (int) cell.y);
+            updateChunk.updateCell((int) cell.x, (int) cell.y, struct);
         }
     }
 

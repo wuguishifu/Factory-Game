@@ -91,9 +91,8 @@ public class Chunk {
         Player.updateRadius(cellSize / 4);
     }
 
-    public void updateCell(int x, int y) {
-        int type = 0;
-        grid[x][y].setStruct(new Rail(type));
+    public void updateCell(int x, int y, Struct struct) {
+        grid[x][y].setStruct(struct);
         refreshGrid();
     }
 
@@ -101,18 +100,27 @@ public class Chunk {
         for (int x = 0; x < chunkSize; x++) {
             for (int y = 0; y < chunkSize; y++) {
                 if (grid[x][y].getStruct() instanceof Rail) {
+                    int id = grid[x][y].getStruct().id();
                     boolean U = false, D = false, L = false, R = false;
                     if (x > 0 && grid[x - 1][y].getStruct() instanceof Rail) {
-                        L = true;
+                        if (grid[x - 1][y].getStruct().id() == id) {
+                            L = true;
+                        }
                     }
                     if (x < chunkSize - 1 && grid[x + 1][y].getStruct() instanceof Rail) {
-                        R = true;
+                        if (grid[x + 1][y].getStruct().id() == id) {
+                            R = true;
+                        }
                     }
                     if (y > 0 && grid[x][y - 1].getStruct() instanceof Rail) {
-                        U = true;
+                        if (grid[x][y - 1].getStruct().id() == id) {
+                            U = true;
+                        }
                     }
                     if (y < chunkSize - 1 && grid[x][y + 1].getStruct() instanceof Rail) {
-                        D = true;
+                        if (grid[x][y + 1].getStruct().id() == id) {
+                            D = true;
+                        }
                     }
                     int type = (R ? 1 : 0) + (U ? 2 : 0) + (L ? 4 : 0) + (D ? 8 : 0);
                     grid[x][y].getStruct().setMeta(Rail.TYPE, type);

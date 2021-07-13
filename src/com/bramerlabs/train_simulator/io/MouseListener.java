@@ -5,6 +5,9 @@ import com.bramerlabs.train_simulator.main.Main;
 import com.bramerlabs.train_simulator.player.Player;
 import com.bramerlabs.train_simulator.world.Chunk;
 import com.bramerlabs.train_simulator.world.World;
+import com.bramerlabs.train_simulator.world.cells.structures.rails.IronRail;
+import com.bramerlabs.train_simulator.world.cells.structures.rails.Rail;
+import com.bramerlabs.train_simulator.world.cells.structures.rails.WoodRail;
 
 import java.awt.event.MouseEvent;
 
@@ -41,7 +44,13 @@ public class MouseListener implements java.awt.event.MouseListener {
             Vector2f mousePosition = new Vector2f(mouseEvent.getX(), mouseEvent.getY());
             mousePosition = Vector2f.add(mousePosition, -main.winCenter.x, -main.winCenter.y);
             mousePosition = Vector2f.scale(mousePosition, 1/(Chunk.cellSize));
-            world.updateCell(mousePosition, player.position);
+            world.updateCell(mousePosition, player.position, new WoodRail());
+        }
+        if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
+            Vector2f mousePosition = new Vector2f(mouseEvent.getX(), mouseEvent.getY());
+            mousePosition = Vector2f.add(mousePosition, -main.winCenter.x, -main.winCenter.y);
+            mousePosition = Vector2f.scale(mousePosition, 1/(Chunk.cellSize));
+            world.updateCell(mousePosition, player.position, null);
         }
     }
 
