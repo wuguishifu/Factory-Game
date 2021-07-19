@@ -19,14 +19,14 @@ public class Renderer {
         this.window = window;
     }
 
-    public void renderMesh(RenderObject object, Camera camera, Shader shader) {
+    public void renderMesh(RenderObject object, Camera camera, Shader shader, float distance) {
         // create MVP matrices
         Matrix4f model = Matrix4f.transform(
                 new Vector3f(object.getPosition(), 0.0f),
-                new Vector3f(object.getRotation(), 0.0f),
+                new Vector3f(0, 0, object.getRotation()),
                 new Vector3f(object.getScale(), 0.0f)
         );
-        Matrix4f view = Matrix4f.view(new Vector3f(camera.getPosition(), 1.0f), new Vector3f(0, 0, 0));
+        Matrix4f view = Matrix4f.view(new Vector3f(camera.getPosition(), distance), new Vector3f(0, 0, 0));
 
         GL30.glBindVertexArray(object.getMesh().getVAO());
 

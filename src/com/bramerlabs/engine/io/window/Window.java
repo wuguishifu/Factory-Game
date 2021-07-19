@@ -122,12 +122,6 @@ public class Window {
         // make an OpenGL window - must be done before running any OpenGL methods
         GL.createCapabilities();
 
-        // only renders objects that are facing the camera - cull any object not facing the camera
-        GL11.glEnable(GL11.GL_CULL_FACE);
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
-        GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
-        GL11.glDepthFunc(GL11.GL_LESS);
-
         // enable antialiasing
         GL11.glEnable(GL46.GL_MULTISAMPLE);
 
@@ -139,7 +133,7 @@ public class Window {
         GL46.glClearColor(r, g, b, 1);
 
         // clear the buffer bits
-        GL46.glClear(GL46.GL_COLOR_BUFFER_BIT | GL46.GL_DEPTH_BUFFER_BIT);
+        GL46.glClear(GL46.GL_COLOR_BUFFER_BIT);
 
         // set the viewport
         GL46.glViewport(0, 0, defaultWidth, defaultHeight);
@@ -209,6 +203,7 @@ public class Window {
      * getter method
      * @return - true if the window should close
      */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean shouldClose() {
         return GLFW.glfwWindowShouldClose(windowHandle);
     }

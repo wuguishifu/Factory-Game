@@ -1,4 +1,4 @@
-package com.bramerlabs.engine.test;
+package com.bramerlabs.train_simulator;
 
 import com.bramerlabs.engine.graphics.Camera;
 import com.bramerlabs.engine.graphics.Material;
@@ -8,9 +8,10 @@ import com.bramerlabs.engine.io.window.Input;
 import com.bramerlabs.engine.io.window.Window;
 import com.bramerlabs.engine.math.vector.Vector2f;
 import com.bramerlabs.engine.objects.shapes_2d.Square;
+import com.bramerlabs.train_simulator.player.Player;
 import org.lwjgl.opengl.GL46;
 
-public class TestMain implements Runnable {
+public class Main implements Runnable {
 
     private final Input input = new Input();
     private final Window window = new Window(input);
@@ -18,9 +19,10 @@ public class TestMain implements Runnable {
     private Shader shader;
     private Renderer renderer;
     private Square square;
+    private Player player;
 
     public static void main(String[] args) {
-        new TestMain().start();
+        new Main().start();
     }
 
     public void start() {
@@ -47,17 +49,24 @@ public class TestMain implements Runnable {
                 new Vector2f(0, 0),
                 0,
                 new Vector2f(1, 1));
+        player = new Player(input);
     }
 
     public void update() {
         window.update();
         GL46.glClearColor(window.r, window.g, window.b, 1.0f);
-        GL46.glClear(GL46.GL_COLOR_BUFFER_BIT | GL46.GL_DEPTH_BUFFER_BIT);
+        GL46.glClear(GL46.GL_COLOR_BUFFER_BIT);
+
+        // update objects
+        player.update();
+
         camera.update();
     }
 
     public void render() {
-        renderer.renderMesh(square, camera, shader, 1.0f);
+        float distance = 5.0f;
+        renderer.renderMesh(square, camera, shader, distance);
+        renderer.renderMesh(player, camera, shader, distance);
         window.swapBuffers();
     }
 

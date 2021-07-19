@@ -5,10 +5,11 @@ import com.bramerlabs.engine.math.vector.Vector2f;
 
 public class RenderObject {
 
-    private final Vector2f position, rotation, scale;
-    private final Mesh mesh;
+    protected Vector2f position, scale;
+    protected float rotation;
+    protected final Mesh mesh;
 
-    public RenderObject(Mesh mesh, Vector2f position, Vector2f rotation, Vector2f scale) {
+    public RenderObject(Mesh mesh, Vector2f position, float rotation, Vector2f scale) {
         this.mesh = mesh;
         this.position = position;
         this.rotation = rotation;
@@ -19,7 +20,7 @@ public class RenderObject {
         return this.position;
     }
 
-    public Vector2f getRotation() {
+    public float getRotation() {
         return this.rotation;
     }
 
