@@ -9,6 +9,7 @@ import com.bramerlabs.engine.io.window.Window;
 import com.bramerlabs.engine.math.vector.Vector2f;
 import com.bramerlabs.engine.objects.shapes_2d.Square;
 import com.bramerlabs.train_simulator.player.Player;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL46;
 
 public class Main implements Runnable {
@@ -20,6 +21,9 @@ public class Main implements Runnable {
     private Renderer renderer;
     private Square square;
     private Player player;
+
+    private boolean[] keysDown;
+    private boolean[] keysDownLast;
 
     public static void main(String[] args) {
         new Main().start();
@@ -50,6 +54,9 @@ public class Main implements Runnable {
                 0,
                 new Vector2f(1, 1));
         player = new Player(input);
+
+        keysDown = new boolean[GLFW.GLFW_KEY_LAST];
+        keysDownLast = new boolean[GLFW.GLFW_KEY_LAST];
     }
 
     public void update() {
@@ -58,9 +65,13 @@ public class Main implements Runnable {
         GL46.glClear(GL46.GL_COLOR_BUFFER_BIT);
 
         // update objects
-        player.update();
+        player.update(keysDown, keysDownLast);
 
         camera.update();
+
+        // update keys
+        System.arraycopy(keysDown, 0, keysDownLast, 0, keysDown.length);
+        System.arraycopy(input.getKeysDown(), 0, keysDown, 0, input.getKeysDown().length);
     }
 
     public void render() {
