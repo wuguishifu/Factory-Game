@@ -186,4 +186,40 @@ public class Input {
     public void setWindowY(int windowY) {
         this.windowY = windowY;
     }
+
+    public void setMouseX(double mouseX) {
+        this.mouseX = mouseX;
+    }
+
+    public void setMouseY(double mouseY) {
+        this.mouseY = mouseY;
+    }
+
+    public void setPrevMouseX(double prevMouseX) {
+        this.prevMouseX = prevMouseX;
+    }
+
+    public void setPrevMouseY(double prevMouseY) {
+        this.prevMouseY = prevMouseY;
+    }
+
+    public void setScrollX(double scrollX) {
+        this.scrollX = scrollX;
+    }
+
+    public void setScrollY(double scrollY) {
+        this.scrollY = scrollY;
+    }
+
+    public void setWindowWidth(int windowWidth) {
+        this.windowWidth = windowWidth;
+    }
+
+    public void setWindowHeight(int windowHeight) {
+        this.windowHeight = windowHeight;
+    }
+
+    public void setResized(boolean resized) {
+        this.resized = resized;
+    }
 }

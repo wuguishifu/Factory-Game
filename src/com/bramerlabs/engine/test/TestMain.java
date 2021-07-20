@@ -57,7 +57,7 @@ public class TestMain implements Runnable {
     }
 
     public void render() {
-        renderer.renderMesh(square, camera, shader, 1.0f);
+        renderer.renderMesh(square, camera, shader);
         window.swapBuffers();
     }
 

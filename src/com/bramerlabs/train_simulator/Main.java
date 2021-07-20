@@ -9,6 +9,7 @@ import com.bramerlabs.engine.io.window.Window;
 import com.bramerlabs.engine.math.vector.Vector2f;
 import com.bramerlabs.engine.objects.shapes_2d.Square;
 import com.bramerlabs.train_simulator.player.Player;
+import com.bramerlabs.train_simulator.player.PlayerCamera;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL46;
 
@@ -16,7 +17,7 @@ public class Main implements Runnable {
 
     private final Input input = new Input();
     private final Window window = new Window(input);
-    private Camera camera;
+    private PlayerCamera camera;
     private Shader shader;
     private Renderer renderer;
     private Square square;
@@ -45,15 +46,15 @@ public class Main implements Runnable {
 
     public void init() {
         window.create();
+        player = new Player(input);
         shader = new Shader("shader/vertex.glsl", "shader/fragment.glsl");
         renderer = new Renderer(window);
-        camera = new Camera(new Vector2f(0, 0), input);
+        camera = new PlayerCamera(player, input);
         square = new Square(
                 new Material("textures/test.png"),
                 new Vector2f(0, 0),
                 0,
                 new Vector2f(1, 1));
-        player = new Player(input);
 
         keysDown = new boolean[GLFW.GLFW_KEY_LAST];
         keysDownLast = new boolean[GLFW.GLFW_KEY_LAST];
@@ -67,6 +68,7 @@ public class Main implements Runnable {
         // update objects
         player.update(keysDown, keysDownLast);
 
+        // update the camera
         camera.update();
 
         // update keys
@@ -75,9 +77,8 @@ public class Main implements Runnable {
     }
 
     public void render() {
-        float distance = 5.0f;
-        renderer.renderMesh(square, camera, shader, distance);
-        renderer.renderMesh(player, camera, shader, distance);
+        renderer.renderMesh(square, camera, shader);
+        renderer.renderMesh(player, camera, shader);
         window.swapBuffers();
     }
 

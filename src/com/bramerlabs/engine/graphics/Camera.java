@@ -5,12 +5,14 @@ import com.bramerlabs.engine.math.vector.Vector2f;
 
 public class Camera {
 
-    private Vector2f position;
-    private Input input;
+    protected Vector2f position;
+    protected Input input;
+    protected float distance;
 
     public Camera(Vector2f position, Input input) {
         this.position = position;
         this.input = input;
+        distance = 1.0f;
     }
 
     public void update() {
@@ -23,6 +25,10 @@ public class Camera {
 
     public Vector2f getPosition() {
         return this.position;
+    }
+
+    public float getDistance() {
+        return this.distance;
     }
 
 }

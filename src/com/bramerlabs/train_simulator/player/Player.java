@@ -13,20 +13,11 @@ public class Player extends RenderObject {
 
     private final Input input;
 
-    private Vector2f velocity, friction;
-    private static final float acceleration = 0.005f;
-    private static final float frictionMagnitude = 0.002f;
     private static final float maxV = 0.1f;
-
-    private float direction, facing;
 
     public Player(Input input) {
         super(createMesh(), new Vector2f(0, 0), 0, new Vector2f(0.5f, 0.5f));
         this.input = input;
-        velocity = new Vector2f(0, 0);
-        friction = new Vector2f(0, 0);
-        direction = 0;
-        facing = 0;
     }
 
     private static Mesh createMesh() {
@@ -44,51 +35,31 @@ public class Player extends RenderObject {
 
     public void update(boolean[] keysDown, boolean[] keysDownLast) {
 
-        // handle button inputs
-        boolean up = keysDown[GLFW.GLFW_KEY_W];
-        boolean down = keysDown[GLFW.GLFW_KEY_S];
-        boolean left = keysDown[GLFW.GLFW_KEY_A];
-        boolean right = keysDown[GLFW.GLFW_KEY_D];
-
+        float x = 0, y = 0;
         // handle acceleration
-        if (up) {
-            velocity = Vector2f.add(velocity, new Vector2f(0, acceleration));
+        if (keysDown[GLFW.GLFW_KEY_W]) {
+            y += 1;
         }
-        if (down) {
-            velocity = Vector2f.add(velocity, new Vector2f(0, -acceleration));
+        if (keysDown[GLFW.GLFW_KEY_S]) {
+            y += -1;
         }
-        if (left) {
-            velocity = Vector2f.add(velocity, new Vector2f(-acceleration, 0));
+        if (keysDown[GLFW.GLFW_KEY_A]) {
+            x += -1;
         }
-        if (right) {
-            velocity = Vector2f.add(velocity, new Vector2f(acceleration, 0));
-        }
-        if (Vector2f.length(velocity) > maxV) {
-            velocity.normalize(maxV);
+        if (keysDown[GLFW.GLFW_KEY_D]) {
+            x += 1;
         }
 
-        // handle friction
-        if (velocity.length() > 0) {
-            friction = Vector2f.normalize(Vector2f.subtract(new Vector2f(0, 0), velocity), frictionMagnitude);
-            velocity = Vector2f.add(velocity, friction);
-        }
-        if (velocity.length() < acceleration / 2) {
-            velocity = new Vector2f(0, 0);
-        }
-
-        // update position
-        this.position = Vector2f.add(position, velocity);
-
-        if (velocity.length() > 0) {
-            // update rotation
+        if (x != 0 || y != 0) {
+            Vector2f velocity = Vector2f.normalize(new Vector2f(x, y), maxV);
+            this.position = Vector2f.add(position, velocity);
             if (Vector3f.cross(new Vector3f(velocity, 0.0f), new Vector3f(0, 1, 0)).z < 0) {
-                direction = 360 - (float) Math.toDegrees(Math.acos(
+                this.rotation = 360 - (float) Math.toDegrees(Math.acos(
                         Vector2f.dot(Vector2f.normalize(velocity), new Vector2f(0, 1))));
             } else {
-                direction = (float) Math.toDegrees(Math.acos(
+                this.rotation = (float) Math.toDegrees(Math.acos(
                         Vector2f.dot(Vector2f.normalize(velocity), new Vector2f(0, 1))));
             }
-            this.rotation = direction;
         }
     }
 }
