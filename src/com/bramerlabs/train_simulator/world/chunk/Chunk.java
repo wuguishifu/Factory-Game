@@ -6,7 +6,7 @@ public class Chunk {
 
     private final Tile[][] tiles;
 
-    private static final int SIZE = 16;
+    public static final int SIZE = 16;
 
     public Chunk() {
         this.tiles = new Tile[SIZE][SIZE];
@@ -32,6 +32,10 @@ public class Chunk {
             return null;
         }
         return tiles[x][y];
+    }
+
+    public static Chunk generateChunk(int chunkX, int chunkY, int seed) {
+        return null;
     }
 
 }

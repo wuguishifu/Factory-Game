@@ -9,7 +9,7 @@ import com.bramerlabs.engine.objects.RenderObject;
 public class Square extends RenderObject {
 
     public Square(Material material, Vector2f position, float angle, Vector2f scale) {
-        super(createMesh(material), position, 0, scale);
+        super(createMesh(material), position, angle, scale);
     }
 
     public static Mesh createMesh(Material material) {

@@ -10,6 +10,7 @@ import com.bramerlabs.engine.math.vector.Vector2f;
 import com.bramerlabs.engine.objects.shapes_2d.Square;
 import com.bramerlabs.train_simulator.player.Player;
 import com.bramerlabs.train_simulator.player.PlayerCamera;
+import com.bramerlabs.train_simulator.world.title.Tile;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL46;
 
@@ -58,6 +59,7 @@ public class Main implements Runnable {
 
         keysDown = new boolean[GLFW.GLFW_KEY_LAST];
         keysDownLast = new boolean[GLFW.GLFW_KEY_LAST];
+        Tile.generateTiles();
     }
 
     public void update() {

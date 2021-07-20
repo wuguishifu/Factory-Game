@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL30;
 
 public class Renderer {
 
-    private final Window window;
+    protected final Window window;
 
     public Renderer(Window window) {
         this.window = window;
@@ -53,4 +53,26 @@ public class Renderer {
 
         GL30.glBindVertexArray(0);
     }
+
+    public void renderMesh(RenderObject object, Matrix4f model, Matrix4f view, Matrix4f projection, Shader shader) {
+        GL30.glBindVertexArray(object.getMesh().getVAO());
+        GL30.glEnableVertexAttribArray(0);
+        GL30.glEnableVertexAttribArray(1);
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, object.getMesh().getIBO());
+        GL13.glActiveTexture(GL13.GL_TEXTURE0);
+        GL13.glBindTexture(GL11.GL_TEXTURE_2D, object.getMesh().getMaterial().getTextureID());
+        shader.bind();
+        shader.setUniform("vModel", model);
+        shader.setUniform("vView", view);
+        shader.setUniform("vProjection", projection);
+        GL11.glDrawElements(GL11.GL_TRIANGLES, object.getMesh().getIndices().length, GL11.GL_UNSIGNED_INT, 0);
+        shader.unbind();
+        GL13.glActiveTexture(GL13.GL_TEXTURE0);
+        GL13.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
+        GL30.glDisableVertexAttribArray(0);
+        GL30.glDisableVertexAttribArray(1);
+        GL30.glBindVertexArray(0);
+    }
+
 }
