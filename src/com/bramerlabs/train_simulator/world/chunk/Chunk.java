@@ -5,6 +5,8 @@ import com.bramerlabs.engine.math.vector.Vector2f;
 import com.bramerlabs.engine.math.vector.Vector3f;
 import com.bramerlabs.train_simulator.world.title.Tile;
 
+import java.util.Objects;
+
 public class Chunk {
 
     private final Tile[][] tiles;
@@ -49,9 +51,9 @@ public class Chunk {
                 float sampleX = (chunkX * SIZE + x) / seedSize;
                 float sampleY = (chunkY * SIZE + y) / seedSize;
                 double noise = ImprovedNoise.noise(sampleX, sampleY, seed);
-                int type = noise < 0.1f ? -1 : 0;
-                System.out.println((new Vector3f(chunkX, chunkY, seed)) + ", " +
-                        new Vector2f(chunkX * SIZE + x, chunkY * SIZE + y) + ", " + noise + ", " + type);
+                int type = noise < 0.1f ? 0 : 1;
+//                System.out.println((new Vector3f(chunkX, chunkY, seed)) + ", " +
+//                        new Vector2f(chunkX * SIZE + x, chunkY * SIZE + y) + ", " + noise + ", " + type);
                 tiles[x][y] = new Tile(type);
             }
         }
@@ -61,6 +63,29 @@ public class Chunk {
     public static Chunk generateChunk(int chunkX, int chunkY, int seed) {
         Tile[][] tiles = generateTiles(chunkX, chunkY, seed);
         return new Chunk(new Vector2f(chunkX, chunkY), tiles);
+    }
+
+    public static class Key {
+
+        public final int x, y;
+
+        public Key(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Key)) return false;
+            Key key = (Key) o;
+            return x == key.x && y == key.y;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(x, y);
+        }
     }
 
 }

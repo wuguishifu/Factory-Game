@@ -51,7 +51,7 @@ public class Player extends RenderObject {
         }
 
         if (x != 0 || y != 0) {
-            Vector2f velocity = Vector2f.normalize(new Vector2f(x, y), maxV);
+            Vector2f velocity = Vector2f.normalize(new Vector2f(x, y), keysDown[GLFW.GLFW_KEY_LEFT_SHIFT] ? 2 * maxV : maxV);
             this.position = Vector2f.add(position, velocity);
             if (Vector3f.cross(new Vector3f(velocity, 0.0f), new Vector3f(0, 1, 0)).z < 0) {
                 this.rotation = 360 - (float) Math.toDegrees(Math.acos(

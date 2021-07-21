@@ -5,47 +5,58 @@ import com.bramerlabs.train_simulator.player.Player;
 import com.bramerlabs.train_simulator.world.chunk.Chunk;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class World {
 
-    public ArrayList<Chunk> loadedChunks;
-    public ArrayList<Chunk> visibleChunks;
+    public HashMap<Chunk.Key, Chunk> loadedChunks;
+    public HashMap<Chunk.Key, Chunk> visibleChunks;
 
     private final int seed;
 
     public World(int seed) {
         this.seed = seed;
-        loadedChunks = new ArrayList<>();
-        visibleChunks = new ArrayList<>();
+        loadedChunks = new HashMap<>();
+        visibleChunks = new HashMap<>();
     }
 
     public Chunk loadChunk(int x, int y) {
         return Chunk.generateChunk(x, y, seed);
     }
 
-    public void setVisible(Chunk chunk) {
-        this.visibleChunks.add(chunk);
+    public void setVisible(Chunk.Key chunkPos) {
+        if (!loadedChunks.containsKey(chunkPos)) {
+            loadedChunks.put(chunkPos, Chunk.generateChunk(chunkPos.x, chunkPos.y, seed));
+        }
+        visibleChunks.put(chunkPos, loadedChunks.get(chunkPos));
     }
 
-    public void setInvisible(Chunk chunk) {
-        this.visibleChunks.remove(chunk);
+    public void setInvisible(Chunk.Key chunkPos) {
+        this.visibleChunks.remove(chunkPos);
     }
 
-    public void unloadChunk(Chunk chunk) {
-        this.loadedChunks.remove(chunk);
+    public void unloadChunk(Chunk.Key chunkPos) {
+        this.loadedChunks.remove(chunkPos);
     }
 
     public void update(Player player) {
-        Vector2f playerPosition = player.getPosition();
-        ArrayList<Chunk> chunksOutOfRange = new ArrayList<>();
-        for (Chunk chunk : visibleChunks) {
-            Vector2f chunkPosition = chunk.getPosition();
-            if (Vector2f.distance(chunkPosition, playerPosition) < 10) {
-                chunksOutOfRange.add(chunk);
+        Chunk.Key inChunk = new Chunk.Key((int) (player.getPosition().x / (Chunk.SIZE * Chunk.TILE_SIZE)),
+                (int) (player.getPosition().y / (Chunk.SIZE * Chunk.TILE_SIZE)));
+        visibleChunks.clear();
+        for (int x = -3; x <= 2; x++) {
+            for (int y = -2; y <= 2; y++) {
+                setVisible(new Chunk.Key(inChunk.x + x, inChunk.y + y));
             }
         }
-        for (Chunk chunk : chunksOutOfRange) {
-            visibleChunks.remove(chunk);
+
+        ArrayList<Chunk.Key> keysToUnload = new ArrayList<>();
+        for (Chunk.Key key : loadedChunks.keySet()) {
+            if (Math.abs(key.x - inChunk.x) > 5 || Math.abs(key.y - inChunk.y) > 5) {
+                keysToUnload.add(key);
+            }
+        }
+        for (Chunk.Key key : keysToUnload) {
+            unloadChunk(key);
         }
     }
 

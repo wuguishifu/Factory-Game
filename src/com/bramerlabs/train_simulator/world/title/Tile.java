@@ -1,14 +1,12 @@
 package com.bramerlabs.train_simulator.world.title;
 
 import com.bramerlabs.engine.graphics.Material;
-import com.bramerlabs.engine.math.vector.Vector2f;
-import com.bramerlabs.engine.objects.shapes_2d.Square;
 
 import java.util.HashMap;
 
 public class Tile {
 
-    public static HashMap<Integer, Square> tileSet;
+    public static HashMap<Integer, Material> tileSet;
 
     private int type;
 
@@ -22,8 +20,8 @@ public class Tile {
 
     public static void generateTiles() {
         tileSet = new HashMap<>();
-        tileSet.put(-1, new Square(new Material("textures/test.png"),
-                new Vector2f(0), 0, new Vector2f(1)));
+        tileSet.put(0, new Material("textures/grass.png"));
+        tileSet.put(1, new Material("textures/dirt.png"));
     }
 
     public int getType() {

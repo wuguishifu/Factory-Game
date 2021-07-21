@@ -67,10 +67,10 @@ public class Main implements Runnable {
         Tile.generateTiles();
 
         world = new World(0);
-        int size = 1;
+        int size = 2;
         for (int i = -size; i <= size; i++) {
             for (int j = -size; j <= size; j++) {
-                world.setVisible(world.loadChunk(i, j));
+                world.setVisible(new Chunk.Key(i, j));
             }
         }
     }
@@ -80,8 +80,12 @@ public class Main implements Runnable {
         GL46.glClearColor(window.r, window.g, window.b, 1.0f);
         GL46.glClear(GL46.GL_COLOR_BUFFER_BIT);
 
+
         // update objects
         player.update(keysDown, keysDownLast);
+
+        // update the world
+        world.update(player);
 
         // update the camera
         camera.update();
@@ -92,7 +96,7 @@ public class Main implements Runnable {
     }
 
     public void render() {
-        renderer.renderWorld(world, camera, shader);
+        renderer.renderWorldNaive(world, camera, shader);
         renderer.renderMesh(player, camera, shader);
         window.swapBuffers();
     }
