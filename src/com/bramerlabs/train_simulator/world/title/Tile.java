@@ -8,14 +8,25 @@ import java.util.HashMap;
 
 public class Tile {
 
-    public static HashMap<String, Square> tileSet;
+    public static HashMap<Integer, Square> tileSet;
 
-    public Tile() {
+    private int type;
 
+    public Tile(int type) {
+        this.type = type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public static void generateTiles() {
-        tileSet.put("Default", new Square(new Material("textures/test.png"),
+        tileSet = new HashMap<>();
+        tileSet.put(-1, new Square(new Material("textures/test.png"),
                 new Vector2f(0), 0, new Vector2f(1)));
+    }
+
+    public int getType() {
+        return this.type;
     }
 }

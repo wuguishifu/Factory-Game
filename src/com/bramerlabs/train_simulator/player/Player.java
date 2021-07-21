@@ -13,7 +13,7 @@ public class Player extends RenderObject {
 
     private final Input input;
 
-    private static final float maxV = 0.1f;
+    private static final float maxV = 0.075f;
 
     public Player(Input input) {
         super(createMesh(), new Vector2f(0, 0), 0, new Vector2f(0.5f, 0.5f));

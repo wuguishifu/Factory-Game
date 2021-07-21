@@ -10,6 +10,9 @@ import com.bramerlabs.engine.math.vector.Vector2f;
 import com.bramerlabs.engine.objects.shapes_2d.Square;
 import com.bramerlabs.train_simulator.player.Player;
 import com.bramerlabs.train_simulator.player.PlayerCamera;
+import com.bramerlabs.train_simulator.world.World;
+import com.bramerlabs.train_simulator.world.WorldRenderer;
+import com.bramerlabs.train_simulator.world.chunk.Chunk;
 import com.bramerlabs.train_simulator.world.title.Tile;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL46;
@@ -20,12 +23,14 @@ public class Main implements Runnable {
     private final Window window = new Window(input);
     private PlayerCamera camera;
     private Shader shader;
-    private Renderer renderer;
+    private WorldRenderer renderer;
     private Square square;
     private Player player;
 
     private boolean[] keysDown;
     private boolean[] keysDownLast;
+
+    private World world;
 
     public static void main(String[] args) {
         new Main().start();
@@ -49,7 +54,7 @@ public class Main implements Runnable {
         window.create();
         player = new Player(input);
         shader = new Shader("shader/vertex.glsl", "shader/fragment.glsl");
-        renderer = new Renderer(window);
+        renderer = new WorldRenderer(window);
         camera = new PlayerCamera(player, input);
         square = new Square(
                 new Material("textures/test.png"),
@@ -60,6 +65,14 @@ public class Main implements Runnable {
         keysDown = new boolean[GLFW.GLFW_KEY_LAST];
         keysDownLast = new boolean[GLFW.GLFW_KEY_LAST];
         Tile.generateTiles();
+
+        world = new World(0);
+        int size = 1;
+        for (int i = -size; i <= size; i++) {
+            for (int j = -size; j <= size; j++) {
+                world.setVisible(world.loadChunk(i, j));
+            }
+        }
     }
 
     public void update() {
@@ -79,7 +92,7 @@ public class Main implements Runnable {
     }
 
     public void render() {
-        renderer.renderMesh(square, camera, shader);
+        renderer.renderWorld(world, camera, shader);
         renderer.renderMesh(player, camera, shader);
         window.swapBuffers();
     }
