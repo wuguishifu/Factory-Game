@@ -105,6 +105,9 @@ public class Main implements Runnable {
         window.destroy();
         square.destroy();
         shader.destroy();
+        renderer.destroy();
+        player.destroy();
+        Tile.destroyTextures();
     }
 
 }

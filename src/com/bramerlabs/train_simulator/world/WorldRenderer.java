@@ -77,7 +77,7 @@ public class WorldRenderer extends Renderer {
         shader.setUniform("vView", view);
         shader.setUniform("vProjection", window.getProjectionMatrix());
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < Tile.numTextures; i++) {
             GL13.glActiveTexture(GL13.GL_TEXTURE0);
             GL13.glBindTexture(GL11.GL_TEXTURE_2D, Tile.tileSet.get(i).getTextureID());
 
@@ -108,5 +108,9 @@ public class WorldRenderer extends Renderer {
         GL30.glDisableVertexAttribArray(0);
         GL30.glDisableVertexAttribArray(1);
         GL30.glBindVertexArray(0);
+    }
+
+    public void destroy() {
+        square.destroy();
     }
 }

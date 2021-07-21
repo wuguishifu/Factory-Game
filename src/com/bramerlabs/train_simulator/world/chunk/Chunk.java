@@ -50,10 +50,24 @@ public class Chunk {
                 float seedSize = 10.f;
                 float sampleX = (chunkX * SIZE + x) / seedSize;
                 float sampleY = (chunkY * SIZE + y) / seedSize;
-                double noise = ImprovedNoise.noise(sampleX, sampleY, seed);
-                int type = noise < 0.1f ? 0 : 1;
+                double noise = ImprovedNoise.noise(sampleX, sampleY, seed) + 0.5;
+                int type;
+                if (noise < 0.3f) {
+                    type = 0;
+                } else if (noise < 0.5f) {
+                    type = 1;
+                } else if (noise < 0.6f) {
+                    type = 2;
+                } else if (noise < 0.85f) {
+                    type = 3;
+                } else if (noise < 0.9f){
+                    type = 4;
+                } else {
+                    type = 4;
+                }
 //                System.out.println((new Vector3f(chunkX, chunkY, seed)) + ", " +
 //                        new Vector2f(chunkX * SIZE + x, chunkY * SIZE + y) + ", " + noise + ", " + type);
+                System.out.println(noise);
                 tiles[x][y] = new Tile(type);
             }
         }
