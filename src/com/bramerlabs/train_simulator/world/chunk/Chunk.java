@@ -45,7 +45,7 @@ public class Chunk {
         Tile[][] tiles = new Tile[SIZE][SIZE];
         for (int x = 0; x < SIZE; x++) {
             for (int y = 0; y < SIZE; y++) {
-                float seedSize = 30.f;
+                float seedSize = 25.0f;
                 float sampleX = (chunkX * SIZE + x) / seedSize;
                 float sampleY = (chunkY * SIZE + y) / seedSize;
                 double n = (noise.noise(sampleX, sampleY) + 1) / 2.0f; // [0, 1]
