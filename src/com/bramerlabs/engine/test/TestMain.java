@@ -43,7 +43,7 @@ public class TestMain implements Runnable {
         renderer = new Renderer(window);
         camera = new Camera(new Vector2f(0, 0), input);
         square = new Square(
-                new Material("textures/test.png"),
+                new Material("textures/assets/test.png"),
                 new Vector2f(0, 0),
                 0,
                 new Vector2f(1, 1));

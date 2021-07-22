@@ -8,7 +8,6 @@ import com.bramerlabs.engine.io.window.Window;
 import com.bramerlabs.engine.math.matrix.Matrix4f;
 import com.bramerlabs.engine.math.vector.Vector2f;
 import com.bramerlabs.engine.math.vector.Vector3f;
-import com.bramerlabs.engine.objects.RenderObject;
 import com.bramerlabs.engine.objects.shapes_2d.Square;
 import com.bramerlabs.train_simulator.world.chunk.Chunk;
 import com.bramerlabs.train_simulator.world.title.Tile;
@@ -23,7 +22,7 @@ public class WorldRenderer extends Renderer {
 
     public WorldRenderer(Window window) {
         super(window);
-        square = new Square(new Material("textures/test.png"), new Vector2f(0, 0), 0, new Vector2f(1, 1));
+        square = new Square(new Material("textures/assets/test.png"), new Vector2f(0, 0), 0, new Vector2f(1, 1));
     }
 
     public void renderWorld(World world, Camera camera, Shader shader) {

@@ -21,11 +21,11 @@ public class Tile {
 
     public static void generateTiles() {
         tileSet = new HashMap<>();
-        tileSet.put(0, new Material("textures/grass2.png"));
-        tileSet.put(1, new Material("textures/grass.png"));
-        tileSet.put(2, new Material("textures/dirt.png"));
-        tileSet.put(3, new Material("textures/dirt2.png"));
-        tileSet.put(4, new Material("textures/snow.png"));
+        tileSet.put(0, new Material("textures/tiles/grass2.png"));
+        tileSet.put(1, new Material("textures/tiles/grass.png"));
+        tileSet.put(2, new Material("textures/tiles/dirt.png"));
+        tileSet.put(3, new Material("textures/tiles/dirt2.png"));
+        tileSet.put(4, new Material("textures/tiles/snow.png"));
     }
 
     public int getType() {

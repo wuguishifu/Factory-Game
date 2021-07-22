@@ -1,8 +1,8 @@
 package com.bramerlabs.train_simulator.world;
 
-import com.bramerlabs.engine.math.vector.Vector2f;
 import com.bramerlabs.train_simulator.player.Player;
 import com.bramerlabs.train_simulator.world.chunk.Chunk;
+import com.bramerlabs.train_simulator.world.chunk.Noise;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,20 +13,22 @@ public class World {
     public HashMap<Chunk.Key, Chunk> visibleChunks;
 
     private final int seed;
+    private final Noise noise;
 
     public World(int seed) {
         this.seed = seed;
+        this.noise = new Noise(seed);
         loadedChunks = new HashMap<>();
         visibleChunks = new HashMap<>();
     }
 
     public Chunk loadChunk(int x, int y) {
-        return Chunk.generateChunk(x, y, seed);
+        return Chunk.generateChunk(x, y, noise);
     }
 
     public void setVisible(Chunk.Key chunkPos) {
         if (!loadedChunks.containsKey(chunkPos)) {
-            loadedChunks.put(chunkPos, Chunk.generateChunk(chunkPos.x, chunkPos.y, seed));
+            loadedChunks.put(chunkPos, Chunk.generateChunk(chunkPos.x, chunkPos.y, noise));
         }
         visibleChunks.put(chunkPos, loadedChunks.get(chunkPos));
     }

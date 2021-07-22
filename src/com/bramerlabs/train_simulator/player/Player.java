@@ -29,7 +29,7 @@ public class Player extends RenderObject {
                         new Vertex(new Vector2f(-0.5f,  0.5f), new Vector2f(0, 0)),
                 },
                 new int[]{0, 1, 2, 0, 2, 3},
-                new Material("textures/player.png")
+                new Material("textures/assets/player.png")
         );
     }
 

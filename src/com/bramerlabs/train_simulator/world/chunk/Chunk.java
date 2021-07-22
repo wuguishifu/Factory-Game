@@ -1,8 +1,6 @@
 package com.bramerlabs.train_simulator.world.chunk;
 
-import com.bramerlabs.engine.math.noise.ImprovedNoise;
 import com.bramerlabs.engine.math.vector.Vector2f;
-import com.bramerlabs.engine.math.vector.Vector3f;
 import com.bramerlabs.train_simulator.world.title.Tile;
 
 import java.util.Objects;
@@ -43,39 +41,36 @@ public class Chunk {
         return this.position;
     }
 
-    public static Tile[][] generateTiles(int chunkX, int chunkY, int seed) {
+    public static Tile[][] generateTiles(int chunkX, int chunkY, Noise noise) {
         Tile[][] tiles = new Tile[SIZE][SIZE];
         for (int x = 0; x < SIZE; x++) {
             for (int y = 0; y < SIZE; y++) {
-                float seedSize = 10.f;
+                float seedSize = 30.f;
                 float sampleX = (chunkX * SIZE + x) / seedSize;
                 float sampleY = (chunkY * SIZE + y) / seedSize;
-                double noise = ImprovedNoise.noise(sampleX, sampleY, seed) + 0.5;
+                double n = (noise.noise(sampleX, sampleY) + 1) / 2.0f; // [0, 1]
                 int type;
-                if (noise < 0.3f) {
-                    type = 0;
-                } else if (noise < 0.5f) {
-                    type = 1;
-                } else if (noise < 0.6f) {
-                    type = 2;
-                } else if (noise < 0.85f) {
-                    type = 3;
-                } else if (noise < 0.9f){
-                    type = 4;
+                if (n < 0.3f) {
+                    type = 0; // grass 1
+                } else if (n < 0.5f) {
+                    type = 1; // grass 2
+                } else if (n < 0.7f) {
+                    type = 2; // dirt 1
+                } else if (n < 0.9f) {
+                    type = 3; // dirt 2
+                } else if (n < 0.95f){
+                    type = 4; // snow
                 } else {
                     type = 4;
                 }
-//                System.out.println((new Vector3f(chunkX, chunkY, seed)) + ", " +
-//                        new Vector2f(chunkX * SIZE + x, chunkY * SIZE + y) + ", " + noise + ", " + type);
-                System.out.println(noise);
                 tiles[x][y] = new Tile(type);
             }
         }
         return tiles;
     }
 
-    public static Chunk generateChunk(int chunkX, int chunkY, int seed) {
-        Tile[][] tiles = generateTiles(chunkX, chunkY, seed);
+    public static Chunk generateChunk(int chunkX, int chunkY, Noise noise) {
+        Tile[][] tiles = generateTiles(chunkX, chunkY, noise);
         return new Chunk(new Vector2f(chunkX, chunkY), tiles);
     }
 

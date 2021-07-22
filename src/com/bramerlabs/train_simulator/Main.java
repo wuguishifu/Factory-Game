@@ -1,9 +1,7 @@
 package com.bramerlabs.train_simulator;
 
-import com.bramerlabs.engine.graphics.Camera;
 import com.bramerlabs.engine.graphics.Material;
 import com.bramerlabs.engine.graphics.Shader;
-import com.bramerlabs.engine.graphics.renderers.Renderer;
 import com.bramerlabs.engine.io.window.Input;
 import com.bramerlabs.engine.io.window.Window;
 import com.bramerlabs.engine.math.vector.Vector2f;
@@ -13,6 +11,7 @@ import com.bramerlabs.train_simulator.player.PlayerCamera;
 import com.bramerlabs.train_simulator.world.World;
 import com.bramerlabs.train_simulator.world.WorldRenderer;
 import com.bramerlabs.train_simulator.world.chunk.Chunk;
+import com.bramerlabs.train_simulator.world.chunk.Noise;
 import com.bramerlabs.train_simulator.world.title.Tile;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL46;
@@ -57,7 +56,7 @@ public class Main implements Runnable {
         renderer = new WorldRenderer(window);
         camera = new PlayerCamera(player, input);
         square = new Square(
-                new Material("textures/test.png"),
+                new Material("textures/assets/test.png"),
                 new Vector2f(0, 0),
                 0,
                 new Vector2f(1, 1));
