@@ -40,7 +40,7 @@ public class WorldRenderer extends Renderer {
 
         for (Chunk chunk : world.visibleChunks.values()) {
             Vector2f chunkPosition = Vector2f.scale(chunk.getPosition(), (Chunk.TILE_SIZE * Chunk.SIZE));
-            Tile[][] tiles = chunk.getTiles();
+            Tile[][] tiles = chunk.getLandTiles();
             for (int x = 0; x < Chunk.SIZE; x++) {
                 for (int y = 0; y < Chunk.SIZE; y++) {
                     if (tiles[x][y].getType() != 0) {
@@ -84,7 +84,7 @@ public class WorldRenderer extends Renderer {
                 Vector2f chunkPosition = Vector2f.scale(chunk.getPosition(), (Chunk.TILE_SIZE * Chunk.SIZE));
                 for (int x = 0; x < Chunk.SIZE; x++) {
                     for (int y = 0; y < Chunk.SIZE; y++) {
-                        if (chunk.getTiles()[x][y].getType() != i) {
+                        if (chunk.getLandTiles()[x][y].getType() != i) {
                             continue;
                         }
                         Vector3f position = new Vector3f(Vector2f.add(chunkPosition,

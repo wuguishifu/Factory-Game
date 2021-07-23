@@ -7,41 +7,61 @@ import java.util.Objects;
 
 public class Chunk {
 
-    private final Tile[][] tiles;
+    private final Tile[][] landTiles;
+    private final Tile[][] structTiles;
 
     public static final int SIZE = 16;
     public static final float TILE_SIZE = 0.5f;
 
     private final Vector2f position;
 
-    public Chunk(Vector2f position, Tile[][] tiles) {
-        this.tiles = tiles;
+    public Chunk(Vector2f position, Tile[][] landTiles, Tile[][] structTiles) {
+        this.landTiles = landTiles;
+        this.structTiles = structTiles;
         this.position = position;
     }
 
-    public Tile[][] getTiles() {
-        return this.tiles;
+    public Tile[][] getLandTiles() {
+        return this.landTiles;
     }
 
-    public void setTile(int x, int y, Tile tile) {
+    public Tile[][] getStructTiles() {
+        return this.structTiles;
+    }
+
+    public void setLandTile(int x, int y, Tile tile) {
         if (x >= SIZE || x < 0 || y >= SIZE || y < 0) {
             return;
         }
-        tiles[x][y] = tile;
+        landTiles[x][y] = tile;
     }
 
-    public Tile getTile(int x, int y) {
+    public void setStructTile(int x, int y, Tile tile) {
+        if (x >= SIZE || x < 0 || y >= SIZE || y < 0) {
+            return;
+        }
+        structTiles[x][y] = tile;
+    }
+
+    public Tile getLandTile(int x, int y) {
         if (x >= SIZE || x < 0 || y >= SIZE || y < 0) {
             return null;
         }
-        return tiles[x][y];
+        return landTiles[x][y];
+    }
+
+    public Tile getStructTile(int x, int y) {
+        if (x >= SIZE || x < 0 || y >= SIZE || y < 0) {
+            return null;
+        }
+        return structTiles[x][y];
     }
 
     public Vector2f getPosition() {
         return this.position;
     }
 
-    public static Tile[][] generateTiles(int chunkX, int chunkY, Noise noise) {
+    public static Tile[][] generateLandTiles(int chunkX, int chunkY, Noise noise) {
         Tile[][] tiles = new Tile[SIZE][SIZE];
         for (int x = 0; x < SIZE; x++) {
             for (int y = 0; y < SIZE; y++) {
@@ -70,8 +90,8 @@ public class Chunk {
     }
 
     public static Chunk generateChunk(int chunkX, int chunkY, Noise noise) {
-        Tile[][] tiles = generateTiles(chunkX, chunkY, noise);
-        return new Chunk(new Vector2f(chunkX, chunkY), tiles);
+        Tile[][] tiles = generateLandTiles(chunkX, chunkY, noise);
+        return new Chunk(new Vector2f(chunkX, chunkY), tiles, new Tile[SIZE][SIZE]);
     }
 
     public static class Key {
