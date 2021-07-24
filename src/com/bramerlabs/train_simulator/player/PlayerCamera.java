@@ -33,13 +33,4 @@ public class PlayerCamera extends Camera {
             input.setScrollY(2 * (defaultDistance - maxDistance));
         }
     }
-
-    public Vector3f getWorldCoords(Player player, Matrix4f projectionMatrix) {
-        Vector2f playerPosition = player.getPosition();
-        Vector2f cursorPosition = new Vector2f((float) input.getMouseX(), (float) input.getMouseY());
-        Vector2f windowSize = new Vector2f((float) input.getWindowWidth(), (float) input.getWindowHeight());
-        Vector2f deviceCoords = Vector2f.divide(cursorPosition, windowSize);
-        Vector2f normalizedDeviceCoords = Vector2f.add(Vector2f.scale(deviceCoords, 2), -1, -1);
-        return null;
-    }
 }

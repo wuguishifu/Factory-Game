@@ -88,12 +88,11 @@ public class Main implements Runnable {
         player.update(keysDown, keysDownLast);
 
         // update the world
-        world.update(player, keysDown, keysDownLast, buttonsDown, buttonsDownLast, input);
+        Vector2f newPos = world.update(player, keysDown, keysDownLast, buttonsDown, buttonsDownLast, input);
+        square.setPosition(newPos);
 
         // update the camera
         camera.update();
-
-        System.out.println(camera.getWorldCoords(player, window.getProjectionMatrix()));
 
         // update keys
         System.arraycopy(keysDown, 0, keysDownLast, 0, keysDown.length);

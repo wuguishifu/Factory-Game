@@ -1,6 +1,7 @@
 package com.bramerlabs.train_simulator.world;
 
 import com.bramerlabs.engine.io.window.Input;
+import com.bramerlabs.engine.math.vector.Vector2f;
 import com.bramerlabs.train_simulator.player.Player;
 import com.bramerlabs.train_simulator.world.chunk.Chunk;
 import com.bramerlabs.train_simulator.world.chunk.Noise;
@@ -46,21 +47,34 @@ public class World {
         return this.seed;
     }
 
-    public void update(Player player, boolean[] keysDown, boolean[] keysDownLast,
+    public Vector2f update(Player player, boolean[] keysDown, boolean[] keysDownLast,
                        boolean[] buttonsDown, boolean[] buttonsDownLast, Input input) {
         // show, hide, load, and unload chunks
         updateShownChunks(player);
 
         // update tiles
-        updateTiles(player, keysDown, keysDownLast, buttonsDown, buttonsDownLast, input);
+        return updateTiles(player, keysDown, keysDownLast, buttonsDown, buttonsDownLast, input);
     }
 
-    public void updateTiles(Player player, boolean[] keysDown, boolean[] keysDownLast,
+    public Vector2f updateTiles(Player player, boolean[] keysDown, boolean[] keysDownLast,
                             boolean[] buttonsDown, boolean[] buttonsDownLast, Input input) {
-        float mouseX = (float) input.getMouseX();
-        float mouseY = (float) input.getMouseY();
-        float playerX = player.getPosition().getX();
-        float playerY = player.getPosition().getY();
+        float tileX = (float) Math.floor(player.getPosition().x/Chunk.TILE_SIZE)*Chunk.TILE_SIZE;
+        float tileY = (float) Math.floor(player.getPosition().y/Chunk.TILE_SIZE)*Chunk.TILE_SIZE;
+        Vector2f tilePosition = new Vector2f(tileX, tileY);
+        float rotation = player.getRotation();
+        float delta = Chunk.TILE_SIZE;
+        if (rotation < 45) {
+            tilePosition = Vector2f.add(tilePosition,  0,  delta);
+        } else if (rotation < 135) {
+            tilePosition = Vector2f.add(tilePosition,  delta,  0);
+        } else if (rotation < 225) {
+            tilePosition = Vector2f.add(tilePosition,  0, -delta);
+        } else if (rotation < 315) {
+            tilePosition = Vector2f.add(tilePosition, -delta,  0);
+        } else {
+            tilePosition = Vector2f.add(tilePosition,  0,  delta);
+        }
+        return tilePosition;
     }
 
     public void updateShownChunks(Player player) {
