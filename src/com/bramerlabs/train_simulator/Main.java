@@ -25,8 +25,8 @@ public class Main implements Runnable {
     private Square square;
     private Player player;
 
-    private boolean[] keysDown;
-    private boolean[] keysDownLast;
+    private boolean[] keysDown, keysDownLast;
+    private boolean[] buttonsDown, buttonsDownLast;
 
     private World world;
 
@@ -58,11 +58,16 @@ public class Main implements Runnable {
                 new Material("textures/assets/test.png"),
                 new Vector2f(0, 0),
                 0,
-                new Vector2f(1, 1));
+                new Vector2f(0.5f, 0.5f));
 
         keysDown = new boolean[GLFW.GLFW_KEY_LAST];
         keysDownLast = new boolean[GLFW.GLFW_KEY_LAST];
+        buttonsDown = new boolean[GLFW.GLFW_MOUSE_BUTTON_LAST];
+        buttonsDownLast = new boolean[GLFW.GLFW_MOUSE_BUTTON_LAST];
         Tile.generateTiles();
+
+        input.setWindowWidth(window.getWidth());
+        input.setWindowHeight(window.getHeight());
 
         world = new World(0);
         int size = 2;
@@ -83,10 +88,12 @@ public class Main implements Runnable {
         player.update(keysDown, keysDownLast);
 
         // update the world
-        world.update(player);
+        world.update(player, keysDown, keysDownLast, buttonsDown, buttonsDownLast, input);
 
         // update the camera
         camera.update();
+
+        System.out.println(camera.getWorldCoords(player, window.getProjectionMatrix()));
 
         // update keys
         System.arraycopy(keysDown, 0, keysDownLast, 0, keysDown.length);
@@ -96,6 +103,7 @@ public class Main implements Runnable {
     public void render() {
         renderer.renderWorldNaive(world, camera, shader);
         renderer.renderMesh(player, camera, shader);
+        renderer.renderMesh(square, camera, shader);
         window.swapBuffers();
     }
 

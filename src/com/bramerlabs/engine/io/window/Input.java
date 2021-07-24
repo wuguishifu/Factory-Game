@@ -1,5 +1,6 @@
 package com.bramerlabs.engine.io.window;
 
+import com.bramerlabs.engine.math.vector.Vector2f;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL46;
 

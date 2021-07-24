@@ -1,5 +1,6 @@
 package com.bramerlabs.train_simulator.world;
 
+import com.bramerlabs.engine.io.window.Input;
 import com.bramerlabs.train_simulator.player.Player;
 import com.bramerlabs.train_simulator.world.chunk.Chunk;
 import com.bramerlabs.train_simulator.world.chunk.Noise;
@@ -41,7 +42,28 @@ public class World {
         this.loadedChunks.remove(chunkPos);
     }
 
-    public void update(Player player) {
+    public int getSeed() {
+        return this.seed;
+    }
+
+    public void update(Player player, boolean[] keysDown, boolean[] keysDownLast,
+                       boolean[] buttonsDown, boolean[] buttonsDownLast, Input input) {
+        // show, hide, load, and unload chunks
+        updateShownChunks(player);
+
+        // update tiles
+        updateTiles(player, keysDown, keysDownLast, buttonsDown, buttonsDownLast, input);
+    }
+
+    public void updateTiles(Player player, boolean[] keysDown, boolean[] keysDownLast,
+                            boolean[] buttonsDown, boolean[] buttonsDownLast, Input input) {
+        float mouseX = (float) input.getMouseX();
+        float mouseY = (float) input.getMouseY();
+        float playerX = player.getPosition().getX();
+        float playerY = player.getPosition().getY();
+    }
+
+    public void updateShownChunks(Player player) {
         Chunk.Key inChunk = new Chunk.Key((int) (player.getPosition().x / (Chunk.SIZE * Chunk.TILE_SIZE)),
                 (int) (player.getPosition().y / (Chunk.SIZE * Chunk.TILE_SIZE)));
         visibleChunks.clear();
@@ -60,9 +82,5 @@ public class World {
         for (Chunk.Key key : keysToUnload) {
             unloadChunk(key);
         }
-    }
-
-    public int getSeed() {
-        return this.seed;
     }
 }
