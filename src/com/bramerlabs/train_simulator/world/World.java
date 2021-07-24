@@ -2,6 +2,7 @@ package com.bramerlabs.train_simulator.world;
 
 import com.bramerlabs.engine.io.window.Input;
 import com.bramerlabs.engine.math.vector.Vector2f;
+import com.bramerlabs.engine.math.vector.Vector3f;
 import com.bramerlabs.train_simulator.player.Player;
 import com.bramerlabs.train_simulator.world.chunk.Chunk;
 import com.bramerlabs.train_simulator.world.chunk.Noise;
@@ -53,28 +54,15 @@ public class World {
         updateShownChunks(player);
 
         // update tiles
-        return updateTiles(player, keysDown, keysDownLast, buttonsDown, buttonsDownLast, input);
+        Vector2f tilePosition = selectTilePosition(player, keysDown, keysDownLast, buttonsDown, buttonsDownLast, input);
+        return null;
     }
 
-    public Vector2f updateTiles(Player player, boolean[] keysDown, boolean[] keysDownLast,
+    public Vector2f selectTilePosition(Player player, boolean[] keysDown, boolean[] keysDownLast,
                             boolean[] buttonsDown, boolean[] buttonsDownLast, Input input) {
-        float tileX = (float) Math.floor(player.getPosition().x/Chunk.TILE_SIZE)*Chunk.TILE_SIZE;
-        float tileY = (float) Math.floor(player.getPosition().y/Chunk.TILE_SIZE)*Chunk.TILE_SIZE;
-        Vector2f tilePosition = new Vector2f(tileX, tileY);
-        float rotation = player.getRotation();
-        float delta = Chunk.TILE_SIZE;
-        if (rotation < 45) {
-            tilePosition = Vector2f.add(tilePosition,  0,  delta);
-        } else if (rotation < 135) {
-            tilePosition = Vector2f.add(tilePosition,  delta,  0);
-        } else if (rotation < 225) {
-            tilePosition = Vector2f.add(tilePosition,  0, -delta);
-        } else if (rotation < 315) {
-            tilePosition = Vector2f.add(tilePosition, -delta,  0);
-        } else {
-            tilePosition = Vector2f.add(tilePosition,  0,  delta);
-        }
-        return tilePosition;
+        Vector3f mousePosition = new Vector3f((float) input.getMouseX(), (float) input.getMouseY(), -1);
+
+        return null;
     }
 
     public void updateShownChunks(Player player) {

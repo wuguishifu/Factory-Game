@@ -25,7 +25,7 @@ public class WorldRenderer extends Renderer {
         square = new Square(new Material("textures/assets/test.png"), new Vector2f(0, 0), 0, new Vector2f(1, 1));
     }
 
-    public void renderWorld(World world, Camera camera, Shader shader) {
+    public void renderWorld(World world, Camera camera, Shader shader, float size) {
         Matrix4f view = Matrix4f.view(new Vector3f(camera.getPosition(), camera.getDistance()), new Vector3f(0));
 
         GL30.glBindVertexArray(square.getMesh().getVAO());
@@ -45,9 +45,9 @@ public class WorldRenderer extends Renderer {
                 for (int y = 0; y < Chunk.SIZE; y++) {
                     if (tiles[x][y].getType() != 0) {
                         Vector3f position = new Vector3f(Vector2f.add(chunkPosition,
-                                Vector2f.scale(new Vector2f(x, y), Chunk.TILE_SIZE)), 0);
+                                Vector2f.scale(new Vector2f(x, y), Chunk.TILE_SIZE * size)), 0);
                         Vector3f rotation = new Vector3f(0);
-                        Vector3f scale = new Vector3f(Chunk.TILE_SIZE, Chunk.TILE_SIZE, 0);
+                        Vector3f scale = new Vector3f(Chunk.TILE_SIZE * size, Chunk.TILE_SIZE * size, 0);
                         Matrix4f model = Matrix4f.transform(position, rotation, scale);
                         shader.setUniform("vModel", model);
                         GL11.glDrawElements(GL11.GL_TRIANGLES, square.getMesh().getIndices().length, GL11.GL_UNSIGNED_INT, 0);
@@ -76,6 +76,9 @@ public class WorldRenderer extends Renderer {
         shader.setUniform("vView", view);
         shader.setUniform("vProjection", window.getProjectionMatrix());
 
+        Vector3f scale = new Vector3f(Chunk.TILE_SIZE, Chunk.TILE_SIZE, 0);
+        Vector3f rotation = new Vector3f(0, 0, 0);
+
         for (int i = 0; i < Tile.numTextures; i++) {
             GL13.glActiveTexture(GL13.GL_TEXTURE0);
             GL13.glBindTexture(GL11.GL_TEXTURE_2D, Tile.tileSet.get(i).getTextureID());
@@ -89,8 +92,6 @@ public class WorldRenderer extends Renderer {
                         }
                         Vector3f position = new Vector3f(Vector2f.add(chunkPosition,
                                 Vector2f.scale(new Vector2f(x, y), Chunk.TILE_SIZE)), 0);
-                        Vector3f rotation = new Vector3f(0, 0, 0);
-                        Vector3f scale = new Vector3f(Chunk.TILE_SIZE, Chunk.TILE_SIZE, 0);
                         Matrix4f model = Matrix4f.transform(position, rotation, scale);
                         shader.setUniform("vModel", model);
                         GL11.glDrawElements(GL11.GL_TRIANGLES, square.getMesh().getIndices().length,
