@@ -112,12 +112,12 @@ public class Input {
         return scrollWheel;
     }
 
-    public double getMouseX() {
-        return mouseX;
+    public float getMouseX() {
+        return (float) mouseX;
     }
 
-    public double getMouseY() {
-        return mouseY;
+    public float getMouseY() {
+        return (float) mouseY;
     }
 
     public double getPrevMouseX() {

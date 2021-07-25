@@ -5,6 +5,7 @@ import com.bramerlabs.engine.math.vector.Vector4f;
 import org.lwjgl.system.MemoryUtil;
 
 import java.nio.FloatBuffer;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 
 public class Matrix4f {
@@ -285,10 +286,10 @@ public class Matrix4f {
         Matrix4f translationMatrix = Matrix4f.translate(negative);
 
         // create full rotation matrix
-        Matrix4f rotXMatrix = Matrix4f.rotate(rotation.getX(), new Vector3f(1, 0, 0));
-        Matrix4f rotYMatrix = Matrix4f.rotate(rotation.getY(), new Vector3f(0, 1, 0));
-        Matrix4f rotZMatrix = Matrix4f.rotate(rotation.getZ(), new Vector3f(0, 0, 1));
-        Matrix4f rotationMatrix = Matrix4f.multiply(rotZMatrix, Matrix4f.multiply(rotYMatrix, rotXMatrix));
+        Matrix4f rotationXMatrix = Matrix4f.rotate(rotation.getX(), new Vector3f(1, 0, 0));
+        Matrix4f rotationYMatrix = Matrix4f.rotate(rotation.getY(), new Vector3f(0, 1, 0));
+        Matrix4f rotationZMatrix = Matrix4f.rotate(rotation.getZ(), new Vector3f(0, 0, 1));
+        Matrix4f rotationMatrix = Matrix4f.multiply(rotationZMatrix, Matrix4f.multiply(rotationYMatrix, rotationXMatrix));
 
         // compile matrices together
         return Matrix4f.multiply(translationMatrix, rotationMatrix);
@@ -428,9 +429,10 @@ public class Matrix4f {
      */
     @Override
     public String toString() {
-        return  "|" + get(0, 0) + "  " + get(0, 1) + "  " + get(0, 2) + "  " + get(0, 3) + "|\n" +
-                "|" + get(1, 0) + "  " + get(1, 1) + "  " + get(1, 2) + "  " + get(1, 3) + "|\n" +
-                "|" + get(2, 0) + "  " + get(2, 1) + "  " + get(2, 2) + "  " + get(2, 3) + "|\n" +
-                "|" + get(3, 0) + "  " + get(3, 1) + "  " + get(3, 2) + "  " + get(3, 3) + "|\n";
+        DecimalFormat df2 = new DecimalFormat("#,###,###,#00.00");
+        return  "|" + df2.format(get(0, 0)) + "  " + df2.format(get(0, 1)) + "  " + df2.format(get(0, 2)) + "  " + df2.format(get(0, 3)) + "|\n" +
+                "|" + df2.format(get(1, 0)) + "  " + df2.format(get(1, 1)) + "  " + df2.format(get(1, 2)) + "  " + df2.format(get(1, 3)) + "|\n" +
+                "|" + df2.format(get(2, 0)) + "  " + df2.format(get(2, 1)) + "  " + df2.format(get(2, 2)) + "  " + df2.format(get(2, 3)) + "|\n" +
+                "|" + df2.format(get(3, 0)) + "  " + df2.format(get(3, 1)) + "  " + df2.format(get(3, 2)) + "  " + df2.format(get(3, 3)) + "|\n";
     }
 }

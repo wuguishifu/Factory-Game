@@ -64,7 +64,7 @@ public class Window {
         this.height = defaultHeight;
 
         // create a projection matrix
-        this.projection = Matrix4f.projection(70.0f, (float) width / (float) height, 0.1f, 100f);
+        this.projection = Matrix4f.projection(70.0f, (float) width / (float) height, 0.01f, 50);
 
         // set the input device
         this.input = input;

@@ -22,7 +22,7 @@ public class Renderer {
     public void renderMesh(RenderObject object, Camera camera, Shader shader) {
         // create MVP matrices
         Matrix4f model = Matrix4f.transform(
-                new Vector3f(object.getPosition(), 0.0f),
+                new Vector3f(object.getPosition(), 0),
                 new Vector3f(0, 0, object.getRotation()),
                 new Vector3f(object.getScale(), 0.0f)
         );

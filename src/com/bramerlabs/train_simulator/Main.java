@@ -88,8 +88,7 @@ public class Main implements Runnable {
         player.update(keysDown, keysDownLast);
 
         // update the world
-//        Vector2f newPos = world.update(player, keysDown, keysDownLast, buttonsDown, buttonsDownLast, input);
-//        square.setPosition(newPos);
+        world.update(player, keysDown, keysDownLast, buttonsDown, buttonsDownLast, input, window, camera);
 
         // update the camera
         camera.update();
