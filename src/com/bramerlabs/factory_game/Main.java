@@ -1,4 +1,4 @@
-package com.bramerlabs.train_simulator;
+package com.bramerlabs.factory_game;
 
 import com.bramerlabs.engine.graphics.Material;
 import com.bramerlabs.engine.graphics.Shader;
@@ -6,12 +6,12 @@ import com.bramerlabs.engine.io.window.Input;
 import com.bramerlabs.engine.io.window.Window;
 import com.bramerlabs.engine.math.vector.Vector2f;
 import com.bramerlabs.engine.objects.shapes_2d.Square;
-import com.bramerlabs.train_simulator.player.Player;
-import com.bramerlabs.train_simulator.player.PlayerCamera;
-import com.bramerlabs.train_simulator.world.World;
-import com.bramerlabs.train_simulator.world.WorldRenderer;
-import com.bramerlabs.train_simulator.world.chunk.Chunk;
-import com.bramerlabs.train_simulator.world.title.Tile;
+import com.bramerlabs.factory_game.player.Player;
+import com.bramerlabs.factory_game.player.PlayerCamera;
+import com.bramerlabs.factory_game.world.World;
+import com.bramerlabs.factory_game.world.WorldRenderer;
+import com.bramerlabs.factory_game.world.chunk.Chunk;
+import com.bramerlabs.factory_game.world.title.Tile;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL46;
 

@@ -1,4 +1,4 @@
-package com.bramerlabs.train_simulator.world.title;
+package com.bramerlabs.factory_game.world.title;
 
 import com.bramerlabs.engine.graphics.Material;
 

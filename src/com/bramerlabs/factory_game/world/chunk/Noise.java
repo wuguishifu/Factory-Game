@@ -1,4 +1,4 @@
-package com.bramerlabs.train_simulator.world.chunk;
+package com.bramerlabs.factory_game.world.chunk;
 
 
 import java.util.ArrayList;

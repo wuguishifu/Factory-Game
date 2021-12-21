@@ -1,7 +1,7 @@
-package com.bramerlabs.train_simulator.world.chunk;
+package com.bramerlabs.factory_game.world.chunk;
 
 import com.bramerlabs.engine.math.vector.Vector2f;
-import com.bramerlabs.train_simulator.world.title.Tile;
+import com.bramerlabs.factory_game.world.title.Tile;
 
 import java.util.Objects;
 

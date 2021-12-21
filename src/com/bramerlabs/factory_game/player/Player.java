@@ -1,4 +1,4 @@
-package com.bramerlabs.train_simulator.player;
+package com.bramerlabs.factory_game.player;
 
 import com.bramerlabs.engine.graphics.Material;
 import com.bramerlabs.engine.graphics.Mesh;

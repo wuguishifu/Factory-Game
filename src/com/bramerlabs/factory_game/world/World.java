@@ -1,4 +1,4 @@
-package com.bramerlabs.train_simulator.world;
+package com.bramerlabs.factory_game.world;
 
 import com.bramerlabs.engine.graphics.Camera;
 import com.bramerlabs.engine.io.window.Input;
@@ -7,9 +7,9 @@ import com.bramerlabs.engine.math.matrix.Matrix4f;
 import com.bramerlabs.engine.math.vector.Vector2f;
 import com.bramerlabs.engine.math.vector.Vector3f;
 import com.bramerlabs.engine.math.vector.Vector4f;
-import com.bramerlabs.train_simulator.player.Player;
-import com.bramerlabs.train_simulator.world.chunk.Chunk;
-import com.bramerlabs.train_simulator.world.chunk.Noise;
+import com.bramerlabs.factory_game.player.Player;
+import com.bramerlabs.factory_game.world.chunk.Chunk;
+import com.bramerlabs.factory_game.world.chunk.Noise;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
