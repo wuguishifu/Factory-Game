@@ -479,6 +479,13 @@ public class Vector2f {
         return this;
     }
 
+    public void rotate(float a) {
+        float newX = (float) (Math.cos(a) * x - Math.sin(a) * y);
+        float newY = (float) (Math.sin(a) * x + Math.cos(a) * y);
+        this.x = newX;
+        this.y = newY;
+    }
+
     public static Vector2f mod(Vector2f v, float m) {
         return new Vector2f(v.x % m, v.y % m);
     }
