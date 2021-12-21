@@ -11,6 +11,7 @@ import com.bramerlabs.factory_game.FactoryGame;
 import com.bramerlabs.factory_game.player.Player;
 import com.bramerlabs.factory_game.world.chunk.Chunk;
 import com.bramerlabs.factory_game.world.chunk.Noise;
+import com.bramerlabs.factory_game.world.title.Tile;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -31,8 +32,25 @@ public class World {
         visibleChunks = new HashMap<>();
     }
 
-    public Chunk loadChunk(int x, int y) {
-        return Chunk.generateChunk(x, y, noise);
+    public Tile getTileInWorld(Vector2f tileLocationInWorld) {
+        int tileX, tileY;
+        if (tileLocationInWorld.x < 0) {
+            tileLocationInWorld.x -= Chunk.SIZE - 1;
+            tileX = (int) (tileLocationInWorld.x % Chunk.SIZE);
+            tileX += Chunk.SIZE - 1;
+        } else {
+            tileX = (int) (tileLocationInWorld.x % Chunk.SIZE);
+        }
+        if (tileLocationInWorld.y < 0) {
+            tileLocationInWorld.y -= Chunk.SIZE - 1;
+            tileY = (int) (tileLocationInWorld.y % Chunk.SIZE);
+            tileY += Chunk.SIZE - 1;
+        } else {
+            tileY = (int) (tileLocationInWorld.y % Chunk.SIZE);
+        }
+        int chunkX = (int) (tileLocationInWorld.x / Chunk.SIZE);
+        int chunkY = (int) (tileLocationInWorld.y / Chunk.SIZE);
+        return visibleChunks.get(new Chunk.Key(chunkX, chunkY)).getLandTile(tileX, tileY);
     }
 
     public void setVisible(Chunk.Key chunkPos) {
@@ -54,18 +72,13 @@ public class World {
         return this.seed;
     }
 
-    public Vector2f update(Player player, boolean[] keysDown, boolean[] keysDownLast, boolean[] buttonsDown,
+    public void update(Player player, boolean[] keysDown, boolean[] keysDownLast, boolean[] buttonsDown,
                            boolean[] buttonsDownLast, Input input, Window window, Camera camera) {
         // show, hide, load, and unload chunks
         updateShownChunks(player);
-
-        // update tiles
-        return selectTilePosition(player, keysDown, keysDownLast, buttonsDown, buttonsDownLast, input,
-                window, camera);
     }
 
-    public Vector2f selectTilePosition(Player player, boolean[] keysDown, boolean[] keysDownLast, boolean[] buttonsDown,
-                                       boolean[] buttonsDownLast, Input input, Window window, Camera camera) {
+    public Vector2f selectTilePosition(Player player, Input input, Window window, Camera camera) {
         Vector2f normalizedCoords = new Vector2f(((2f * input.getMouseX()) / (input.getWindowWidth()) - 1f),
                 ((2f * input.getMouseY()) / (input.getWindowHeight()) - 1f));
         Vector4f clipCoords = new Vector4f(normalizedCoords.x, normalizedCoords.y, -1.0f, 1.0f);
@@ -74,11 +87,6 @@ public class World {
         Matrix4f view = Matrix4f.view(new Vector3f(camera.getPosition(), camera.getDistance()), new Vector3f(0));
         Matrix4f inverseView = Matrix4f.invert(view);
         Vector4f worldCoords = Matrix4f.multiply(inverseView, eyeCoords);
-
-        if (keysDown[GLFW.GLFW_KEY_P] && !keysDownLast[GLFW.GLFW_KEY_P]) {
-            System.out.println(camera.getDistance());
-        }
-
         return worldCoords.xyz().xy().multiply(camera.getDistance(), -camera.getDistance()).add(player.getPosition());
     }
 

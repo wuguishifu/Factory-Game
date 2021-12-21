@@ -479,6 +479,10 @@ public class Vector2f {
         return this;
     }
 
+    public static Vector2f mod(Vector2f v, float m) {
+        return new Vector2f(v.x % m, v.y % m);
+    }
+
     /**
      * determines if this vector is equal to another object o
      * @param o - the other object

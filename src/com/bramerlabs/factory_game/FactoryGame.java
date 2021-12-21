@@ -22,7 +22,6 @@ public class FactoryGame implements Runnable {
     private PlayerCamera camera;
     private Shader shader;
     private WorldRenderer renderer;
-    private Square square;
     private Player player;
 
     private boolean[] keysDown, keysDownLast;
@@ -50,15 +49,10 @@ public class FactoryGame implements Runnable {
 
     public void init() {
         window.create();
-        player = new Player(input);
+        player = new Player();
         shader = new Shader("shader/vertex.glsl", "shader/fragment.glsl");
         renderer = new WorldRenderer(window);
         camera = new PlayerCamera(player, input);
-        square = new Square(
-                new Material("textures/assets/test.png"),
-                new Vector2f(0, 0),
-                0,
-                new Vector2f(0.5f, 0.5f));
 
         keysDown = new boolean[GLFW.GLFW_KEY_LAST];
         keysDownLast = new boolean[GLFW.GLFW_KEY_LAST];
@@ -88,36 +82,45 @@ public class FactoryGame implements Runnable {
         player.update(keysDown, keysDownLast);
 
         // update the world
-        Vector2f coord = world.update(player, keysDown, keysDownLast, buttonsDown, buttonsDownLast, input, window, camera);
-        square.setPosition(coord.add(0.25f, 0.25f).floor(2f));
-        Vector2f selectedTileLocationInWorld = new Vector2f(coord).add(0.25f, 0.25f).floor(2f).scale(2f);
-        System.out.println(selectedTileLocationInWorld);
+        world.update(player, keysDown, keysDownLast, buttonsDown, buttonsDownLast, input, window, camera);
 
+        if (buttonClicked(GLFW.GLFW_MOUSE_BUTTON_LEFT)) {
+            Vector2f coord = world.selectTilePosition(player, input, window, camera);
+            Vector2f selectedTileLocationInWorld = new Vector2f(coord).add(Chunk.TILE_SIZE/2, Chunk.TILE_SIZE/2).floor(1/Chunk.TILE_SIZE).scale(1/Chunk.TILE_SIZE);
+            Tile tile = world.getTileInWorld(selectedTileLocationInWorld);
+            tile.setType(4);
+        }
 
         // update the camera
         camera.update();
 
-        // update keys
+        // update input source
         System.arraycopy(keysDown, 0, keysDownLast, 0, keysDown.length);
         System.arraycopy(input.getKeysDown(), 0, keysDown, 0, input.getKeysDown().length);
+        System.arraycopy(buttonsDown, 0, buttonsDownLast, 0, buttonsDown.length);
+        System.arraycopy(input.getButtonsDown(), 0, buttonsDown, 0, input.getButtonsDown().length);
     }
 
     public void render() {
         renderer.renderWorldNaive(world, camera, shader);
         renderer.renderMesh(player, camera, shader);
-        if (square.getPosition() != null) {
-            renderer.renderMesh(square, camera, shader);
-        }
         window.swapBuffers();
     }
 
     public void close() {
         window.destroy();
-        square.destroy();
         shader.destroy();
         renderer.destroy();
         player.destroy();
         Tile.destroyTextures();
+    }
+
+    public boolean buttonClicked(int buttonCode) {
+        return buttonsDown[buttonCode] && !buttonsDownLast[buttonCode];
+    }
+
+    public boolean keyClicked(int keyCode) {
+        return keysDown[keyCode] && !keysDownLast[keyCode];
     }
 
 }

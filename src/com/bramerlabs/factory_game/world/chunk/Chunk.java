@@ -11,7 +11,7 @@ public class Chunk {
     private final Tile[][] structTiles;
 
     public static final int SIZE = 16;
-    public static final float TILE_SIZE = 0.5f;
+    public static final float TILE_SIZE = 1f;
 
     private final Vector2f position;
 
@@ -115,6 +115,12 @@ public class Chunk {
         public int hashCode() {
             return Objects.hash(x, y);
         }
+
+        @Override
+        public String toString() {
+            return "(" + x + ", " + y + ")";
+        }
+
     }
 
 }
