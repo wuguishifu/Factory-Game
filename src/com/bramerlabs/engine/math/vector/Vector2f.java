@@ -467,6 +467,18 @@ public class Vector2f {
         return v.x * u.y - v.y * u.x;
     }
 
+    public Vector2f floor(float c) {
+        this.x = (float) (Math.floor(c * x) / c);
+        this.y = (float) (Math.floor(c * y) / c);
+        return this;
+    }
+
+    public Vector2f round() {
+        this.x = (float) Math.floor(x + 0.5f);
+        this.y = (float) Math.floor(y + 0.5f);
+        return this;
+    }
+
     /**
      * determines if this vector is equal to another object o
      * @param o - the other object

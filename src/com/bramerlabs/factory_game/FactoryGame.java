@@ -15,7 +15,7 @@ import com.bramerlabs.factory_game.world.title.Tile;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL46;
 
-public class Main implements Runnable {
+public class FactoryGame implements Runnable {
 
     private final Input input = new Input();
     private final Window window = new Window(input);
@@ -31,11 +31,11 @@ public class Main implements Runnable {
     private World world;
 
     public static void main(String[] args) {
-        new Main().start();
+        new FactoryGame().start();
     }
 
     public void start() {
-        Thread main = new Thread(this, "Test Thread");
+        Thread main = new Thread(this, "Main Thread");
         main.start();
     }
 
@@ -88,7 +88,11 @@ public class Main implements Runnable {
         player.update(keysDown, keysDownLast);
 
         // update the world
-        world.update(player, keysDown, keysDownLast, buttonsDown, buttonsDownLast, input, window, camera);
+        Vector2f coord = world.update(player, keysDown, keysDownLast, buttonsDown, buttonsDownLast, input, window, camera);
+        square.setPosition(coord.add(0.25f, 0.25f).floor(2f));
+        Vector2f selectedTileLocationInWorld = new Vector2f(coord).add(0.25f, 0.25f).floor(2f).scale(2f);
+        System.out.println(selectedTileLocationInWorld);
+
 
         // update the camera
         camera.update();
@@ -101,7 +105,9 @@ public class Main implements Runnable {
     public void render() {
         renderer.renderWorldNaive(world, camera, shader);
         renderer.renderMesh(player, camera, shader);
-        renderer.renderMesh(square, camera, shader);
+        if (square.getPosition() != null) {
+            renderer.renderMesh(square, camera, shader);
+        }
         window.swapBuffers();
     }
 

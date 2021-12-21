@@ -1,4 +1,4 @@
-#version 330 core
+#version 420 core
 
 // input texture coordinate
 in vec2 passTextureCoord;

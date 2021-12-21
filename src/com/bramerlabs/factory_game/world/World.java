@@ -7,6 +7,7 @@ import com.bramerlabs.engine.math.matrix.Matrix4f;
 import com.bramerlabs.engine.math.vector.Vector2f;
 import com.bramerlabs.engine.math.vector.Vector3f;
 import com.bramerlabs.engine.math.vector.Vector4f;
+import com.bramerlabs.factory_game.FactoryGame;
 import com.bramerlabs.factory_game.player.Player;
 import com.bramerlabs.factory_game.world.chunk.Chunk;
 import com.bramerlabs.factory_game.world.chunk.Noise;
@@ -59,9 +60,8 @@ public class World {
         updateShownChunks(player);
 
         // update tiles
-        Vector2f tilePosition = selectTilePosition(player, keysDown, keysDownLast, buttonsDown, buttonsDownLast, input,
+        return selectTilePosition(player, keysDown, keysDownLast, buttonsDown, buttonsDownLast, input,
                 window, camera);
-        return tilePosition;
     }
 
     public Vector2f selectTilePosition(Player player, boolean[] keysDown, boolean[] keysDownLast, boolean[] buttonsDown,
@@ -76,18 +76,10 @@ public class World {
         Vector4f worldCoords = Matrix4f.multiply(inverseView, eyeCoords);
 
         if (keysDown[GLFW.GLFW_KEY_P] && !keysDownLast[GLFW.GLFW_KEY_P]) {
-            System.out.println("Projection:\n" + window.getProjectionMatrix() + "\n");
-            System.out.println("Inverse Projection:\n" + inverseProjection + "\n");
-            System.out.println("View:\n" + view + "\n");
-            System.out.println("Inverse View\n" + inverseView + "\n");
-            System.out.println(worldCoords);
+            System.out.println(camera.getDistance());
         }
 
-        Vector3f ray = Vector3f.normalize(worldCoords.xyz());
-        Vector3f origin = new Vector3f(camera.getPosition(), camera.getDistance());
-        System.out.println(worldCoords);
-
-        return null;
+        return worldCoords.xyz().xy().multiply(camera.getDistance(), -camera.getDistance()).add(player.getPosition());
     }
 
     public void updateShownChunks(Player player) {
