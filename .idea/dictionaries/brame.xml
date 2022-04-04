@@ -3,6 +3,7 @@
     <words>
       <w>coords</w>
       <w>lerp</w>
+      <w>sumprod</w>
       <w>unskew</w>
     </words>
   </dictionary>
